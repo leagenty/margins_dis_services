@@ -39,7 +39,7 @@ agroenvi <- read.csv(file="3. Pedoclim data/3.3. Field clustering/Raw/Agroenviro
 
 id_code <- agroenvi %>% 
   dplyr::select(id_parcelle,code_parcelle,region_biogeo) %>% 
-  distinct() %>% 
+  distinct() 
 ```
 
 # 2. Select variables
@@ -69,7 +69,7 @@ biogeo <- agroenvi %>%
 ```
 
 
-# 3. Input missing data
+# 3. Impute missing data
 https://delladata.fr/imputation-donnees-manquantes-missmda/ mais nécessaire de faire ça avant
 https://www.youtube.com/watch?v=bdD9P3fGb70
 ```{r}

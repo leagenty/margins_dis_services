@@ -1,0 +1,28 @@
+{
+    "id": "DB0555C1",
+    "path": "G:/margins_dis_services/3. Pedoclim data/3.3. Field clustering/Script/2024-25-01_field_clustering.Rmd",
+    "project_path": "3. Pedoclim data/3.3. Field clustering/Script/2024-25-01_field_clustering.Rmd",
+    "type": "r_markdown",
+    "hash": "3107705783",
+    "contents": "",
+    "dirty": false,
+    "created": 1721639738796.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "chunk_output_type": "console",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "117,0",
+        "scrollLine": "106",
+        "docOutlineVisible": "1"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1721640127,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1721640127633,
+    "read_only": false,
+    "read_only_alternatives": []
+}

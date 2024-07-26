@@ -1,5 +1,0 @@
-"0","try_data <- read_delim(file=""2. Traits/2.2. TRY_floral_diameter/Raw/31339.csv"")
-"
-"2","Erreur dans read_delim(file = ""2. Traits/2.2. TRY_floral_diameter/Raw/31339.csv"") : 
-  impossible de trouver la fonction ""read_delim""
-"
