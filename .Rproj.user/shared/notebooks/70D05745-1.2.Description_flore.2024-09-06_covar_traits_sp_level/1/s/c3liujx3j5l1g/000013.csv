@@ -1,0 +1,8 @@
+"0","traits_clean <- traits %>% "
+"0","   mutate(graminoids = "
+"0","           ifelse(c(FAMILLE==""Poaceae""|FAMILLE==""Juncaceae""|FAMILLE==""Cyperaceae""),""graminoid"",""forbs"")) %>% "
+"0","      mutate(life_cycle = "
+"0","           ifelse(biol_type_simpl==""therophyte"",""annual"",""perennial"")) %>% "
+"0","        mutate(nat_val = "
+"0","           ifelse(Agrotolerance==""agrotolerant"",""agrotolerant"",""nat_val"")) %>% "
+"0","  dplyr::select(-biol_type_simpl,-Messicole,-Agrotolerance)"

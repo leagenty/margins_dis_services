@@ -124,6 +124,13 @@ SC_Year_Copper.compounds.1=scale(SC_Year_Copper.compounds.1),
           rich_sp=scale(rich_sp),  
           shannon=scale(shannon), 
           nb_hill=scale(nb_hill))
+
+predictors_clust1 <- predictors %>% 
+  filter(clust=="1") 
+predictors_clust2 <- predictors %>% 
+  filter(clust=="2") 
+predictors_clust3 <- predictors %>% 
+  filter(clust=="3") 
 ```
 
 # A. % ENTOMO
@@ -2995,3 +3002,93 @@ mor=moran.test(resid(mod_pays_best), col.w.d_FEVE_clust3, zero.policy=T)
 mor
 ```
 not spacially autocorrelated
+
+
+
+```{r}
+var1 <- predictors_clust1 %>% 
+  dplyr::select(id_parcelle,entomogame_1,perennial_100,nat_val_100,FRic_flow,FDiv_flow,weeds_100) %>% 
+  group_by(id_parcelle) %>% 
+  summarise_all(mean) %>% 
+  dplyr::select(-id_parcelle)
+
+var2 <- predictors_clust2 %>% 
+  dplyr::select(id_parcelle,entomogame_1,perennial_100,nat_val_100,FRic_flow,FDiv_flow,weeds_100)%>% 
+  group_by(id_parcelle) %>% 
+  summarise_all(mean)%>% 
+  dplyr::select(-id_parcelle)
+
+var3 <- predictors_clust3 %>% 
+  dplyr::select(id_parcelle,entomogame_1,perennial_100,nat_val_100,FRic_flow,FDiv_flow,weeds_100)%>% 
+  group_by(id_parcelle) %>% 
+  summarise_all(mean)%>% 
+  dplyr::select(-id_parcelle)
+
+library(psych)
+
+cor <- corr.test(var3,var3,use="pairwise",method="pearson",adjust="bonferroni")
+cor$p.adj
+cor$r
+```
+clust1
+
+cor$p.adj
+              entomogame_1 perennial_100  nat_val_100 FRic_flow FDiv_flow weeds_100
+entomogame_1   0.000000000  1.093547e-01 4.744488e-03 1.0000000 1.0000000 1.0000000
+perennial_100  0.109354672  0.000000e+00 3.221843e-12 1.0000000 1.0000000 0.5551021
+nat_val_100    0.004744488  3.221843e-12 0.000000e+00 1.0000000 1.0000000 0.3905467
+FRic_flow      1.000000000  1.000000e+00 1.000000e+00 0.0000000 0.1754519 1.0000000
+FDiv_flow      1.000000000  1.000000e+00 1.000000e+00 0.1754519 0.0000000 1.0000000
+weeds_100      1.000000000  5.551021e-01 3.905467e-01 1.0000000 1.0000000 0.0000000
+
+cor$r
+              entomogame_1 perennial_100 nat_val_100   FRic_flow   FDiv_flow   weeds_100
+entomogame_1     1.0000000   -0.33779496 -0.42726467  0.12441126 -0.13932579 -0.24447888
+perennial_100   -0.3377950    1.00000000  0.73163407 -0.09256718 -0.02343594 -0.27882333
+nat_val_100     -0.4272647    0.73163407  1.00000000  0.06832332  0.18438082 -0.29261047
+FRic_flow        0.1244113   -0.09256718  0.06832332  1.00000000  0.32390991  0.19419198
+FDiv_flow       -0.1393258   -0.02343594  0.18438082  0.32390991  1.00000000 -0.03665187
+weeds_100       -0.2444789   -0.27882333 -0.29261047  0.19419198 -0.03665187  1.00000000
+
+
+clust2
+
+cor$p.adj
+              entomogame_1 perennial_100  nat_val_100 FRic_flow  FDiv_flow weeds_100
+entomogame_1    0.00000000  1.000000e+00 1.000000e+00 1.0000000 0.03764744 0.2151854
+perennial_100   1.00000000  0.000000e+00 1.344636e-08 1.0000000 0.62404261 1.0000000
+nat_val_100     1.00000000  1.344636e-08 0.000000e+00 0.2308688 1.00000000 0.7886601
+FRic_flow       1.00000000  1.000000e+00 2.308688e-01 0.0000000 1.00000000 1.0000000
+FDiv_flow       0.03764744  6.240426e-01 1.000000e+00 1.0000000 0.00000000 1.0000000
+weeds_100       0.21518539  1.000000e+00 7.886601e-01 1.0000000 1.00000000 0.0000000
+
+cor$r
+              entomogame_1 perennial_100 nat_val_100   FRic_flow  FDiv_flow  weeds_100
+entomogame_1    1.00000000     0.1176417  -0.1227756  0.09475527 -0.2722674 -0.2257283
+perennial_100   0.11764172     1.0000000   0.4876739 -0.15523180 -0.1994385 -0.1633765
+nat_val_100    -0.12277555     0.4876739   1.0000000  0.22774954 -0.0531789 -0.1889456
+FRic_flow       0.09475527    -0.1552318   0.2277495  1.00000000 -0.1286516  0.1473318
+FDiv_flow      -0.27226741    -0.1994385  -0.0531789 -0.12865160  1.0000000  0.1042108
+weeds_100      -0.22572833    -0.1633765  -0.1889456  0.14733177  0.1042108  1.0000000
+
+
+clust3
+
+
+cor$p.adj
+              entomogame_1 perennial_100  nat_val_100  FRic_flow FDiv_flow    weeds_100
+entomogame_1    0.00000000  1.000000e+00 1.000000e+00 0.01583413  1.000000 1.000000e+00
+perennial_100   1.00000000  0.000000e+00 8.159488e-21 0.06494339  0.172363 3.514626e-05
+nat_val_100     1.00000000  8.159488e-21 0.000000e+00 1.00000000  1.000000 2.207228e-16
+FRic_flow       0.01583413  6.494339e-02 1.000000e+00 0.00000000  1.000000 1.000000e+00
+FDiv_flow       1.00000000  1.723630e-01 1.000000e+00 1.00000000  0.000000 1.000000e+00
+weeds_100       1.00000000  3.514626e-05 2.207228e-16 1.00000000  1.000000 0.000000e+00
+
+cor$r
+              entomogame_1 perennial_100 nat_val_100   FRic_flow   FDiv_flow   weeds_100
+entomogame_1    1.00000000   -0.02589439  -0.1342926  0.22941900 -0.13727858 -0.08735854
+perennial_100  -0.02589439    1.00000000   0.5772802 -0.20426829 -0.18500493 -0.31237286
+nat_val_100    -0.13429255    0.57728023   1.0000000  0.10311404  0.13446366 -0.52257523
+FRic_flow       0.22941900   -0.20426829   0.1031140  1.00000000  0.01472563  0.04053339
+FDiv_flow      -0.13727858   -0.18500493   0.1344637  0.01472563  1.00000000 -0.01119413
+weeds_100      -0.08735854   -0.31237286  -0.5225752  0.04053339 -0.01119413  1.00000000
