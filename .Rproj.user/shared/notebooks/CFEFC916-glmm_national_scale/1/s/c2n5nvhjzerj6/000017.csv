@@ -1,0 +1,8 @@
+"0","dataset_500_ENI_Lea <- read.csv(file=""5. Models_par_clusters_pedoclimatiques/5.2. Models/Raw/dataset_500_ENI_Lea.csv"") %>%
+  mutate(TypeCulture=as_factor(TypeCulture),
+         clust=as_factor(clust)) %>% 
+  left_join(pca_axes)
+"
+"2","Avis : impossible d'ouvrir le fichier '5. Models_par_clusters_pedoclimatiques/5.2. Models/Raw/dataset_500_ENI_Lea.csv' : No such file or directory"
+"2","Erreur dans file(file, ""rt"") : impossible d'ouvrir la connexion
+"

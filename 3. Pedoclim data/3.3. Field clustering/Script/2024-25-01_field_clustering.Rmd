@@ -109,7 +109,9 @@ N & CEC 0.7
 precip saisonnalité & T° moy 0.7
 --> j'enlève precip saisonn
 
-Runner l'ACP
+# 4. PCA
+
+## 4. Run PCA
 ```{r}
 var_clust_imp_selected <- var_clust_imp %>% 
   dplyr::select(-Soil_CEC, -Soil_organic_carbon_content,-Soil_Silt_content,-Soil_Clay_content,-precip_season)%>% 
@@ -128,7 +130,7 @@ fviz_pca_biplot(res.pca,
 fviz_eig(res.pca)
 
 fviz_pca_var(res.pca, 
-                axes =c(1,3),
+                axes =c(3,4),
              col.var = "contrib",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel=TRUE)
@@ -136,9 +138,11 @@ fviz_pca_var(res.pca,
 r <- dimdesc(res.pca, axes = c(1,2), proba = 0.05)
 r$Dim.1
 r$Dim.2
-Grr <- dimdesc(res.pca, axes = c(3,4), proba = 0.05)
+r2 <- dimdesc(res.pca, axes = c(3,4), proba = 0.05)
 r$Dim.3
 r$Dim.4
+
+
 ```
 --> Dim 1 14.2%
 
@@ -189,6 +193,7 @@ region_biogeo=MA  -1.9003479 9.863957e-20
 --> Dim 3 10.4%
 Paysages avec bcp de bandes herbeuses, de haies et bois, de cultures, de routes et de bâtiments
 T° moyennes annuelles basses
+Nord-est, bassin parisien et massif central
 
 
                           correlation      p.value
@@ -208,7 +213,28 @@ region_biogeo=ZSO -0.3653828 1.331018e-04
 region_biogeo=C   -1.3003428 9.944400e-05
 region_biogeo=ZM  -0.9304572 1.291945e-07
 
-# 4. Clustering of pedoclimatic regions
+## 4.2. Save pca axes
+```{r}
+names <- var_clust_imp %>% 
+  dplyr::select(-Soil_CEC, -Soil_organic_carbon_content,-Soil_Silt_content,-Soil_Clay_content,-precip_season)%>% 
+  mutate_if(is.numeric, scale) %>% 
+  dplyr::select(id_parcelle)
+
+
+dim_pca <-  get_pca_ind(res.pca)
+dim_pca$coord
+
+axes_pca <- as_tibble(dim_pca$coord) %>% 
+  dplyr::select(1:3) %>% 
+  cbind(names) %>% 
+  relocate(id_parcelle)
+
+#write.csv(axes_pca,file="3. Pedoclim data/3.3. Field clustering/Processed/pedoclim_pca_axes.csv")
+```
+
+
+
+# 5. Clustering of pedoclimatic regions
 ```{r}
 var_clust2 <- var_clust_imp %>% 
   dplyr::select(-region_biogeo)
@@ -242,7 +268,7 @@ kruskal.test(Soil_Sand_content ~clust,data=clusters_pc_pays)
 pairwise.wilcox.test(clusters_pc_pays$Soil_Sand_content,clusters_pc_pays$clust, p.adjust.method = "bonferroni")
 ```
 
-# 5. Plotting clusters vs region biogeo
+# 6. Plotting clusters vs region biogeo
 ```{r}
 #clusters_pc_pays <- read.csv(file="3. Pedoclim data/3.3. Field clustering/Processed/pedoclim_clusters2.csv")
 
@@ -250,11 +276,11 @@ cluster_number <- clusters_pc_pays %>%
   dplyr::select(id_parcelle,clust) %>% 
   distinct()
 
-#write.csv(cluster_number,file="4. Pedoclim data/3.3. Field clustering/Processed/cluster_number2.csv")
+#write.csv(cluster_number,file="3. Pedoclim data/3.3. Field clustering/Processed/cluster_number2.csv")
 ```
 
 
-## 5.1. Group 1
+## 6.1. Group 1
 ```{r}
 clusters_pc_pays <- clusters_pc_pays %>% 
   mutate(region_biogeo=as.factor(region_biogeo),
@@ -301,7 +327,7 @@ MC --> rouge-orange
 MA --> bleu foncé
 ZSO --> bleu clair
 
-## 5.2. Group 2
+## 6.2. Group 2
 ```{r}
 clust2 <- clusters_pc_pays %>% 
   filter(clust=="2")
@@ -333,7 +359,7 @@ ggplot(clust2_cam, aes(x = "", y = prop, fill = region_biogeo)) +
 
 ```
 
-## 5.3. Group 3
+## 6.3. Group 3
 ```{r}
 clust3 <- clusters_pc_pays %>% 
   filter(clust=="3")
@@ -365,7 +391,7 @@ ggplot(clust3_cam, aes(x = "", y = prop, fill = region_biogeo)) +
 
 ```
 
-## 5.4. Nb parcelles par zone biogéo pour comparaison
+## 6.4. Nb parcelles par zone biogéo pour comparaison
 ```{r}
 tot_parc <- clusters_pc_pays %>% 
  dplyr::select(region_biogeo) %>% 
@@ -392,9 +418,9 @@ ggplot(tot_parc, aes(x = "", y = prop, fill = region_biogeo)) +
 
 ```
 
-# 6. Liens clusters agriculture
+# 7. Liens clusters agriculture
 
-# 6.1. Représentativité clusters selon cultures
+## 7.1. Représentativité clusters selon cultures
 ```{r}
 clust_cult <- agroenvi %>% 
   dplyr::select(id_parcelle,plante_reference) %>% 
@@ -433,7 +459,7 @@ clust3
    
    
    
-# 6.2. IFT et bio selon clusters
+## 7.2. IFT et bio selon clusters
 ```{r}
 bio <- read.csv(file="3. Pedoclim data/3.3. Field clustering/Raw/dea_type_prod_traite_Lea.csv",sep=";") %>% 
   mutate(id_parcelle=as.factor(id_parcelle))
