@@ -269,18 +269,18 @@ r.squaredGLMM(mod_prat_best)
 Fixed effects:
                           Estimate Std. Error t value
 (Intercept)              6.0591781  2.8301117   2.141
-annee                   -0.0027372  0.0014027  -1.951
+annee                   -0.0027372  0.0014027  -1.951 .
 JulianDay               -0.0002186  0.0001605  -1.362
 RisqueDebordement        0.0154496  0.0101284   1.525
 exposition2Semi ombrage -0.0048887  0.0199605  -0.245
-TypeCultureMaraichage   -0.0100388  0.0211198  -0.475
-TypeCultureVigne         0.0953592  0.0198576   4.802
+TypeCultureMaraichage   -0.0100388  0.0211198  -0.475 
+TypeCultureVigne         0.0953592  0.0198576   4.802 ***
 Dim.1                    0.0035026  0.0042952   0.815
-Dim.2                    0.0101504  0.0050656   2.004
+Dim.2                    0.0101504  0.0050656   2.004 *
 Dim.3                   -0.0048557  0.0045284  -1.072
 p_bio                    0.0004006  0.0005060   0.792
-Bordure_Largeur         -0.0042297  0.0024005  -1.762
-CoefN                   -0.0006247  0.0001072  -5.827
+Bordure_Largeur         -0.0042297  0.0024005  -1.762 .
+CoefN                   -0.0006247  0.0001072  -5.827 ***
 
 Response: entomogame_1
                     Chisq Df Pr(>Chisq)    
@@ -311,12 +311,36 @@ dataset_500_ENI_FRic <- dataset_500_ENI_Lea %>%
 ```{r}
 m0 <- lmer(FRic_flow ~ annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 + (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=T,na.action="na.fail")
 vif(m0)
-dredge(m0)
 summary(m0)
 Anova(m0)
 r.squaredGLMM(m0)
 ```
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)             -6.528e-01  7.149e-01  -0.913
+annee                    3.995e-04  3.544e-04   1.127
+JulianDay               -2.104e-04  3.999e-05  -5.262
+RisqueDebordement       -2.313e-03  2.483e-03  -0.932
+exposition2Semi ombrage  6.350e-03  4.857e-03   1.307
+TypeCultureMaraichage    3.252e-03  5.118e-03   0.635
+TypeCultureVigne        -9.741e-03  4.384e-03  -2.222
+Dim.1                   -1.792e-03  1.022e-03  -1.754
+Dim.2                   -2.696e-04  1.225e-03  -0.220
+Dim.3                   -9.595e-04  1.085e-03  -0.884
 
+Response: FRic_flow
+                    Chisq Df Pr(>Chisq)    
+annee              1.2708  1    0.25961    
+JulianDay         27.6870  1  1.426e-07 ***
+RisqueDebordement  0.8681  1    0.35148    
+exposition2        1.7094  1    0.19107    
+TypeCulture        7.1306  2    0.02829 *  
+Dim.1              3.0758  1    0.07947 .  
+Dim.2              0.0485  1    0.82574    
+Dim.3              0.7819  1    0.37657 
+
+  R2m       R2c
+0.03589973 0.4661628
 
 
 ### B.2. Type de production
@@ -325,7 +349,6 @@ r.squaredGLMM(m0)
 mod_bio <- lmer(FRic_flow ~  annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture + Dim.1 + Dim.2 + Dim.3  +  type_production +(1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=T,na.action="na.fail")
 dredge(mod_bio)
 ```
-
 ns
 
 ### B.3. Pratiques
@@ -337,34 +360,90 @@ mod_pest <- lmer(FRic_flow ~   annee + JulianDay^2 + RisqueDebordement + exposit
 vif(mod_pest)
 dredge(mod_pest)
 
-mod_pest_best <- lmer(FRic_flow ~  JulianDay^2 + IFT_T+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=T, na.action="na.fail")
+mod_pest_best <- lmer(FRic_flow ~  annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture + Dim.1 + Dim.2 + Dim.3  + IFT_T+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=T, na.action="na.fail")
 summary(mod_pest_best)
 Anova(mod_pest_best)
 r.squaredGLMM(mod_pest_best)
 ```
+Response: FRic_flow
+                    Chisq Df Pr(>Chisq)    
+annee              1.2732  1    0.25916    
+JulianDay         26.1723  1  3.123e-07 ***
+RisqueDebordement  1.0699  1    0.30096    
+exposition2        2.0730  1    0.14992    
+TypeCulture        2.0208  2    0.36407    
+Dim.1              1.7877  1    0.18121    
+Dim.2              0.0009  1    0.97627    
+Dim.3              0.7748  1    0.37873    
+IFT_T              3.4378  1    0.06372 . 
 
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)             -6.502e-01  7.148e-01  -0.910
+annee                    3.998e-04  3.543e-04   1.128
+JulianDay               -2.050e-04  4.007e-05  -5.116
+RisqueDebordement       -2.567e-03  2.482e-03  -1.034
+exposition2Semi ombrage  6.995e-03  4.858e-03   1.440
+TypeCultureMaraichage    3.383e-03  5.107e-03   0.662
+TypeCultureVigne        -5.049e-03  5.053e-03  -0.999
+Dim.1                   -1.393e-03  1.042e-03  -1.337
+Dim.2                    3.668e-05  1.233e-03   0.030
+Dim.3                   -9.530e-04  1.083e-03  -0.880
+IFT_T                   -1.277e-03  6.886e-04  -1.854
+
+ R2m       R2c
+0.04022257 0.4672713
 
 #### B.3.2. Pratiques de gestion de la bordure
 
 ```{r}
-mod_bord <- lmer(FRic_flow~  annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture + Dim.1 + Dim.2 + Dim.3 + Bordure_Largeur+Bordure_BroyageFauchage_ramassage+ Bordure_BroyageFauchage_SansRamassage+Bordure_NombreInterventionYEAR+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=F, na.action="na.fail")
+mod_bord <- lmer(FRic_flow~  JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture + Dim.1 + Dim.2 + Dim.3 + IFT_T+ Bordure_Largeur+Bordure_BroyageFauchage_ramassage+ Bordure_BroyageFauchage_SansRamassage+Bordure_NombreInterventionYEAR+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=F, na.action="na.fail")
 dredge(mod_bord)
 ```
-
 ns
 
 #### B.3.3. Pratiques intra-parcellaires
 
 ```{r}
-mod_prat <- lmer(FRic_flow ~ annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 +IFT_Hors_Herbicide2013_2019 +IFT_Herbicide2013_2019+DivRotation+CoefN+SC_Year_Copper.compounds.1+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=F, na.action="na.fail")
+mod_prat <- lmer(FRic_flow ~ annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 + IFT_T+IFT_Hors_Herbicide2013_2019 +IFT_Herbicide2013_2019+DivRotation+CoefN+SC_Year_Copper.compounds.1+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=F, na.action="na.fail")
 vif(mod_prat)
 dredge(mod_prat)
-mod_prat_best <- lmer(FRic_flow ~annee + JulianDay^2 + IFT_T+IFT_Hors_Herbicide2013_2019 +IFT_Herbicide2013_2019+SC_Year_Copper.compounds.1+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=T, na.action="na.fail")
+
+mod_prat_best <- lmer(FRic_flow ~  annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 +IFT_Hors_Herbicide2013_2019 +IFT_Herbicide2013_2019+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=T, na.action="na.fail")
 summary(mod_prat_best)
 Anova(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
 ```
+Response: FRic_flow
+                              Chisq Df Pr(>Chisq)    
+annee                        1.2920  1    0.25568    
+JulianDay                   27.8706  1  1.297e-07 ***
+RisqueDebordement            0.9335  1    0.33396    
+exposition2                  1.6585  1    0.19781    
+TypeCulture                  1.9075  2    0.38529    
+Dim.1                        1.0833  1    0.29796    
+Dim.2                        0.2990  1    0.58451    
+Dim.3                        1.3386  1    0.24728    
+IFT_Hors_Herbicide2013_2019  4.7263  1    0.02970 *  
+IFT_Herbicide2013_2019       3.6277  1    0.05682 .  
 
+Fixed effects:
+                              Estimate Std. Error t value
+(Intercept)                 -6.538e-01  7.149e-01  -0.914
+annee                        4.028e-04  3.544e-04   1.137 ***
+JulianDay                   -2.105e-04  3.988e-05  -5.279
+RisqueDebordement           -2.381e-03  2.464e-03  -0.966
+exposition2Semi ombrage      6.189e-03  4.806e-03   1.288
+TypeCultureMaraichage        2.307e-03  5.210e-03   0.443
+TypeCultureVigne            -5.767e-03  5.547e-03  -1.040
+Dim.1                       -1.076e-03  1.034e-03  -1.041
+Dim.2                       -6.674e-04  1.221e-03  -0.547
+Dim.3                       -1.250e-03  1.080e-03  -1.157
+IFT_Hors_Herbicide2013_2019 -9.912e-04  4.559e-04  -2.174 *
+IFT_Herbicide2013_2019      -2.460e-03  1.291e-03  -1.905 -
+
+R2m       R2c
+0.0494434 0.4673782
 
 ## C. FDiv_flow
 
@@ -372,12 +451,37 @@ r.squaredGLMM(mod_prat_best)
 
 ```{r}
 m0 <- lmer(FDiv_flow ~ annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 +  (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=T, na.action="na.fail")
-dredge(m0)
+
 summary(m0)
 Anova(m0)
 r.squaredGLMM(m0)
 ```
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)              2.420e+00  1.471e+00   1.645
+annee                   -7.969e-04  7.293e-04  -1.093
+JulianDay               -1.859e-04  7.062e-05  -2.633 **
+RisqueDebordement       -2.725e-03  3.581e-03  -0.761
+exposition2Semi ombrage  1.064e-02  6.752e-03   1.575
+TypeCultureMaraichage    3.256e-03  7.100e-03   0.459
+TypeCultureVigne        -6.619e-03  6.080e-03  -1.089
+Dim.1                   -4.849e-03  1.419e-03  -3.418 ***
+Dim.2                   -3.370e-03  1.721e-03  -1.958 -
+Dim.3                    2.688e-04  1.518e-03   0.177
 
+Response: FDiv_flow
+                    Chisq Df Pr(>Chisq)    
+annee              1.1938  1  0.2745544    
+JulianDay          6.9333  1  0.0084607 ** 
+RisqueDebordement  0.5790  1  0.4466935    
+exposition2        2.4819  1  0.1151610    
+TypeCulture        1.9705  2  0.3733386    
+Dim.1             11.6837  1  0.0006305 ***
+Dim.2              3.8335  1  0.0502385 .  
+Dim.3              0.0314  1  0.8594535
+
+R2m       R2c
+0.0246698 0.2213472
 
 ### C.2. Type de production
 
@@ -385,7 +489,6 @@ r.squaredGLMM(m0)
 mod_bio <- lmer(FDiv_flow ~  annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 + type_production +(1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=T,na.action="na.fail")
 dredge(mod_bio)
 ```
-
 ns
 
 ### C.3. Pratiques
@@ -393,37 +496,28 @@ ns
 #### C.3.1. Pesticides échelle paysages
 
 ```{r}
-mod_pays <- lmer(FDiv_flow ~   annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 + IFT_H+ IFT_T+p_bio+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=F, na.action="na.fail")
+mod_pays <- lmer(FDiv_flow ~   JulianDay^2 + Dim.1 + Dim.2  + IFT_H+ IFT_T+p_bio+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=F, na.action="na.fail")
 dredge(mod_pays)
 ```
-
+ns
 
 #### C.3.2. Pratiques de gestion de la bordure
 
 ```{r}
-mod_bord <- lmer(FDiv_flow~ D annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 + Bordure_Largeur+Bordure_BroyageFauchage_ramassage+ Bordure_BroyageFauchage_SansRamassage+Bordure_NombreInterventionYEAR+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=F, na.action="na.fail")
+mod_bord <- lmer(FDiv_flow~ annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 + Bordure_Largeur+Bordure_BroyageFauchage_ramassage+ Bordure_BroyageFauchage_SansRamassage+Bordure_NombreInterventionYEAR+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=F, na.action="na.fail")
 dredge(mod_bord)
-
-mod_bord_best <- lmer(FDiv_flow~ Dim.1 +Bordure_BroyageFauchage_ramassage+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=T, na.action="na.fail")
-summary(mod_bord_best)
-Anova(mod_bord_best)
-r.squaredGLMM(mod_bord_best)
 ```
+ns
 
 
 #### C.3.3. Pratiques intra-parcellaires
 
 ```{r}
-mod_prat <- lmer(FDiv_flow ~  annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 +Bordure_BroyageFauchage_ramassage + IFT_Hors_Herbicide2013_2019 +IFT_Herbicide2013_2019+DivRotation+CoefN+SC_Year_Copper.compounds.1+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=F, na.action="na.fail")
+mod_prat <- lmer(FDiv_flow ~  annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 + IFT_Hors_Herbicide2013_2019 +IFT_Herbicide2013_2019+DivRotation+CoefN+SC_Year_Copper.compounds.1+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=F, na.action="na.fail")
 vif(mod_prat)
 dredge(mod_prat)
-
-mod_prat_best <- lmer(FDiv_flow ~  annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 +DivRotation+ (1| code_parcelle)  , data=dataset_500_ENI_FRic, REML=T, na.action="na.fail")
-summary(mod_prat_best)
-Anova(mod_prat_best)
-r.squaredGLMM(mod_prat_best)
 ```
-
+ns
 
 ## D. % nature value
 
@@ -629,20 +723,20 @@ IFT_Herbicide2013_2019  6.6408  1  0.0099669 **
 Fixed effects:
                           Estimate Std. Error t value
 (Intercept)             -1.076e+03  2.977e+02  -3.614
-annee                    5.717e-01  1.475e-01   3.874
+annee                    5.717e-01  1.475e-01   3.874 ***
 JulianDay                1.442e-02  1.674e-02   0.861
-RisqueDebordement       -4.313e+00  9.996e-01  -4.315
+RisqueDebordement       -4.313e+00  9.996e-01  -4.315 ***
 exposition2Semi ombrage  2.137e+00  1.950e+00   1.096
-TypeCultureMaraichage   -7.431e+00  2.092e+00  -3.552
-TypeCultureVigne         2.349e-01  2.249e+00   0.104
+TypeCultureMaraichage   -7.431e+00  2.092e+00  -3.552 ***
+TypeCultureVigne         2.349e-01  2.249e+00   0.104 -
 Dim.1                   -7.579e-01  5.093e-01  -1.488
 Dim.2                   -7.720e-01  5.152e-01  -1.499
 Dim.3                   -5.846e-02  4.549e-01  -0.129
-IFT_H                   -5.707e+00  1.918e+00  -2.975
-IFT_T                   -1.024e+00  2.928e-01  -3.498
-p_bio                   -1.482e-01  5.475e-02  -2.707
-Bordure_Largeur          8.138e-01  2.342e-01   3.475
-IFT_Herbicide2013_2019  -1.306e+00  5.069e-01  -2.577
+IFT_H                   -5.707e+00  1.918e+00  -2.975 **
+IFT_T                   -1.024e+00  2.928e-01  -3.498 ***
+p_bio                   -1.482e-01  5.475e-02  -2.707 **
+Bordure_Largeur          8.138e-01  2.342e-01   3.475 ***
+IFT_Herbicide2013_2019  -1.306e+00  5.069e-01  -2.577 **
 
 R2m       R2c
 0.1318811 0.4951966
@@ -778,19 +872,19 @@ DivRotation                     7.0578  1  0.0078920 **
 
 Fixed effects:
                                  Estimate Std. Error t value
-(Intercept)                    -812.13967  315.76202  -2.572
-annee                             0.42679    0.15648   2.727
-JulianDay                         0.16424    0.01781   9.219
+(Intercept)                    -812.13967  315.76202  -2.572 **
+annee                             0.42679    0.15648   2.727 ***
+JulianDay                         0.16424    0.01781   9.219 **
 RisqueDebordement                -3.39306    1.11688  -3.038
 exposition2Semi ombrage           0.92056    2.19399   0.420
-TypeCultureMaraichage            -4.19926    2.36554  -1.775
-TypeCultureVigne                 -3.89048    2.30706  -1.686
+TypeCultureMaraichage            -4.19926    2.36554  -1.775 -
+TypeCultureVigne                 -3.89048    2.30706  -1.686 -
 Dim.1                            -0.56379    0.47488  -1.187
-Dim.2                            -1.90884    0.56345  -3.388
-Dim.3                             0.85895    0.49831   1.724
-Bordure_Largeur                   0.89179    0.26481   3.368
-Bordure_NombreInterventionYEAR   -0.78738    0.36051  -2.184
-DivRotation                      -9.20436    3.46464  -2.657
+Dim.2                            -1.90884    0.56345  -3.388 ***
+Dim.3                             0.85895    0.49831   1.724 -
+Bordure_Largeur                   0.89179    0.26481   3.368 ***
+Bordure_NombreInterventionYEAR   -0.78738    0.36051  -2.184 *
+DivRotation                      -9.20436    3.46464  -2.657 **
 
            R2m       R2c
 [1,] 0.1458398 0.5368748
@@ -894,12 +988,43 @@ R2m       R2c
 mod_bord <- lmer(weeds_100~ annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 + IFT_T+ p_bio+ Bordure_Largeur+Bordure_BroyageFauchage_ramassage+ Bordure_BroyageFauchage_SansRamassage+Bordure_NombreInterventionYEAR+ (1| code_parcelle)  , data=dataset_500_ENI_Lea, REML=F, na.action="na.fail")
 dredge(mod_bord)
 
-mod_bord_best <- mod_bord <- lmer(weeds_100~ annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 + (1| code_parcelle)  , data=dataset_500_ENI_Lea, REML=T, na.action="na.fail")
+mod_bord_best <- mod_bord <- lmer(weeds_100~ annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 + IFT_T+ p_bio+ Bordure_BroyageFauchage_SansRamassage + (1| code_parcelle)  , data=dataset_500_ENI_Lea, REML=T, na.action="na.fail")
 summary(mod_bord_best)
 Anova(mod_bord_best)
 r.squaredGLMM(mod_bord_best)
 ```
+Response: weeds_100
+                                        Chisq Df Pr(>Chisq)    
+annee                                  0.0180  1  0.8933587    
+JulianDay                             15.2077  1  9.631e-05 ***
+RisqueDebordement                      1.7458  1  0.1864015    
+exposition2                            0.0371  1  0.8472635    
+TypeCulture                           63.5221  2  1.608e-14 ***
+Dim.1                                 12.8214  1  0.0003427 ***
+Dim.2                                  2.5081  1  0.1132625    
+Dim.3                                  0.1456  1  0.7027497    
+IFT_T                                  3.8206  1  0.0506255 .  
+p_bio                                  2.9849  1  0.0840467 .  
+Bordure_BroyageFauchage_SansRamassage  7.3977  1  0.0065307 ** 
 
+Fixed effects:
+                                       Estimate Std. Error t value
+(Intercept)                            62.75682  302.93836   0.207
+annee                                  -0.02013    0.15016  -0.134
+JulianDay                               0.06469    0.01659   3.900
+RisqueDebordement                       1.29555    0.98051   1.321
+exposition2Semi ombrage                -0.36739    1.90744  -0.193
+TypeCultureMaraichage                  -6.62313    2.01303  -3.290
+TypeCultureVigne                      -16.26823    2.05522  -7.916
+Dim.1                                   1.46972    0.41046   3.581
+Dim.2                                   0.77334    0.48831   1.584
+Dim.3                                  -0.16548    0.43362  -0.382
+IFT_T                                   0.53497    0.27369   1.955
+p_bio                                   0.08336    0.04825   1.728
+Bordure_BroyageFauchage_SansRamassage  -0.33600    0.12354  -2.720
+
+R2m       R2c
+0.168566 0.4941995
 
 #### G.3.3. Pratiques intra-parcellaires
 
@@ -908,8 +1033,42 @@ mod_prat <- lmer(weeds_100 ~ annee + JulianDay^2 + RisqueDebordement +   exposit
 vif(mod_prat)
 dredge(mod_prat)
 
-mod_prat_best <- lmer(weeds_100 ~ annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 +(1| code_parcelle)  , data=dataset_500_ENI_Lea, REML=F, na.action="na.fail")
+mod_prat_best <- lmer(weeds_100 ~ annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture + Dim.1 + Dim.2 + Dim.3 + IFT_T+ p_bio+ Bordure_BroyageFauchage_SansRamassage + CoefN  +(1| code_parcelle)  , data=dataset_500_ENI_Lea, REML=F, na.action="na.fail")
 Anova(mod_prat_best)
 summary(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
 ```
+Response: weeds_100
+                                        Chisq Df Pr(>Chisq)    
+annee                                  0.0261  1  0.8716863    
+JulianDay                             15.2665  1  9.336e-05 ***
+RisqueDebordement                      1.5895  1  0.2073916    
+exposition2                            0.0085  1  0.9265689    
+TypeCulture                           43.7223  2  3.205e-10 ***
+Dim.1                                 11.2185  1  0.0008099 ***
+Dim.2                                  2.5539  1  0.1100213    
+Dim.3                                  0.1448  1  0.7035583    
+IFT_T                                  3.2990  1  0.0693217 .  
+p_bio                                  4.3043  1  0.0380166 *  
+Bordure_BroyageFauchage_SansRamassage  9.3410  1  0.0022408 ** 
+CoefN                                  4.7173  1  0.0298612 * 
+
+Fixed effects:
+                                       Estimate Std. Error t value
+(Intercept)                            69.20323  302.74497   0.229
+annee                                  -0.02424    0.15007  -0.162
+JulianDay                               0.06440    0.01648   3.907 ***
+RisqueDebordement                       1.21702    0.96530   1.261
+exposition2Semi ombrage                -0.17282    1.87521  -0.092
+TypeCultureMaraichage                  -6.05453    1.99328  -3.037 ***
+TypeCultureVigne                      -14.37520    2.19664  -6.544 ***
+Dim.1                                   1.36094    0.40632   3.349
+Dim.2                                   0.76675    0.47979   1.598
+Dim.3                                  -0.16208    0.42595  -0.381
+IFT_T                                   0.48974    0.26963   1.816 .
+p_bio                                   0.09951    0.04796   2.075 *
+Bordure_BroyageFauchage_SansRamassage  -0.37477    0.12262  -3.056 **
+CoefN                                   0.02205    0.01015   2.172 *
+
+R2m       R2c
+0.1748179 0.4888386
