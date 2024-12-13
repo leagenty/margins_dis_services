@@ -78,7 +78,7 @@ col.w.d_FEVE_clust3 = readRDS(file="4. Spatial autocorrelation/Processed/col.w.d
 ```{r}
 predictors <- dataset_500_ENI_Lea %>% 
   mutate(id_parcelle=as_factor(id_parcelle),
-         annee=as_factor(annee),
+         annee=as.numeric(annee),
          type_production=as_factor(type_production),
          RegionAgricole=as_factor(RegionAgricole),
       region_biogeo=as_factor(region_biogeo),
@@ -264,36 +264,32 @@ summary(mod_prat_best)
 Anova(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
 ```
-Fixed effects:
-                         Estimate Std. Error t value
-(Intercept)             -0.548490   0.121228  -4.524
-IFT_H                   -0.274801   0.111149  -2.472
-Bordure_Largeur         -0.130555   0.061838  -2.111
-annee2014               -0.048255   0.104712  -0.461
-annee2015               -0.073212   0.103813  -0.705
-annee2016                0.094324   0.105366   0.895
-annee2017                0.022876   0.105790   0.216
-annee2018               -0.007855   0.103304  -0.076
-JulianDay                0.060096   0.050588   1.188
-RisqueDebordement       -0.013947   0.082916  -0.168
-exposition2Semi ombrage  0.234604   0.210870   1.113
-TypeCultureMaraichage    0.495347   0.291042   1.702
-TypeCultureVigne         0.779653   0.281702   2.768
-CoefN                   -0.236050   0.091298  -2.585
-
 Response: entomogame_1
                    Chisq Df Pr(>Chisq)   
-IFT_H             6.1126  1   0.013422 * 
-Bordure_Largeur   4.4573  1   0.034753 * 
-annee             3.0658  5   0.689839   
-JulianDay         1.4112  1   0.234850   
-RisqueDebordement 0.0283  1   0.866416   
-exposition2       1.2378  1   0.265901   
-TypeCulture       9.6096  2   0.008190 **
-CoefN             6.6848  1   0.009724 **
+IFT_H             6.2193  1   0.012637 * 
+Bordure_Largeur   4.5846  1   0.032261 * 
+annee             0.2769  1   0.598763   
+JulianDay         1.7577  1   0.184908   
+RisqueDebordement 0.0230  1   0.879470   
+exposition2       1.1931  1   0.274708   
+TypeCulture       9.7840  2   0.007506 **
+CoefN             6.8222  1   0.009003 **
 
-           R2m       R2c
-[1,] 0.2975086 0.6703806
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)             -19.338449  35.704675  -0.542
+IFT_H                    -0.275746   0.110570  -2.494
+Bordure_Largeur          -0.131700   0.061509  -2.141
+annee                     0.009321   0.017715   0.526
+JulianDay                 0.066553   0.050199   1.326
+RisqueDebordement        -0.012510   0.082499  -0.152
+exposition2Semi ombrage   0.229074   0.209720   1.092
+TypeCultureMaraichage     0.490789   0.289460   1.696
+TypeCultureVigne          0.785771   0.280187   2.804
+CoefN                    -0.237173   0.090804  -2.612
+
+R2m       R2c
+0.2974831 0.6685536
 
 #### A.I.3.4. Test spatial autocorrelation
 ```{r}
@@ -377,32 +373,28 @@ summary(mod_prat_best)
 Anova(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)              0.16550    0.11520   1.437
-annee2014               -0.12356    0.07951  -1.554
-annee2015               -0.20480    0.08591  -2.384
-annee2016               -0.05740    0.08034  -0.714
-annee2017               -0.12822    0.08177  -1.568
-annee2018               -0.20385    0.08126  -2.508
-JulianDay               -0.09441    0.03602  -2.621
-RisqueDebordement        0.05837    0.05256   1.111
-exposition2Semi ombrage -0.19416    0.23329  -0.832
-TypeCultureMaraichage   -0.25011    0.17639  -1.418
-TypeCultureVigne         0.46703    0.14498   3.221
-IFT_Herbicide2013_2019  -0.19622    0.09096  -2.157
-
 Response: entomogame_1
                          Chisq Df Pr(>Chisq)    
-annee                   9.4290  5   0.093130 .  
-JulianDay               6.8696  1   0.008767 ** 
-RisqueDebordement       1.2332  1   0.266777    
-exposition2             0.6926  1   0.405266    
-TypeCulture            24.8360  2  4.045e-06 ***
-IFT_Herbicide2013_2019  4.6533  1   0.030993 *  
+annee                   3.4802  1    0.06211 .  
+JulianDay               6.1451  1    0.01318 *  
+RisqueDebordement       1.3291  1    0.24896    
+exposition2             0.7334  1    0.39178    
+TypeCulture            24.7920  2  4.135e-06 ***
+IFT_Herbicide2013_2019  4.6722  1    0.03065 *  
 
-           R2m       R2c
-[1,] 0.1789149 0.5464541
+Fixed effects:
+                        Estimate Std. Error t value
+(Intercept)             52.13337   27.91607   1.868
+annee                   -0.02584    0.01385  -1.866
+JulianDay               -0.08898    0.03589  -2.479
+RisqueDebordement        0.06066    0.05262   1.153
+exposition2Semi ombrage -0.20017    0.23374  -0.856
+TypeCultureMaraichage   -0.25400    0.17672  -1.437
+TypeCultureVigne         0.46511    0.14525   3.202
+IFT_Herbicide2013_2019  -0.19694    0.09111  -2.162
+
+R2m       R2c
+0.1749081 0.5446911
 
 #### A.II.3.4. Test spatial autocorrelation
 ```{r}
@@ -549,36 +541,32 @@ summary(mod_prat_best)
 Anova(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)             -0.04060    0.07129  -0.569
-annee2014               -0.16233    0.06566  -2.472
-annee2015               -0.23051    0.06721  -3.430
-annee2016               -0.14448    0.06600  -2.189
-annee2017               -0.20953    0.06614  -3.168
-annee2018               -0.09431    0.06653  -1.418
-JulianDay               -0.02124    0.03425  -0.620
-RisqueDebordement        0.03236    0.04214   0.768
-exposition2Semi ombrage  0.00216    0.15326   0.014
-TypeCultureMaraichage   -0.09358    0.21452  -0.436
-TypeCultureVigne         0.83537    0.20187   4.138
-IFT_T                   -0.18054    0.07823  -2.308
-IFT_Herbicide2013_2019   0.12331    0.04901   2.516
-CoefN                   -0.28702    0.05547  -5.175
-
 Response: entomogame_1
                          Chisq Df Pr(>Chisq)    
-annee                  15.9631  5  0.0069503 ** 
-JulianDay               0.3846  1  0.5351610    
-RisqueDebordement       0.5899  1  0.4424422    
-exposition2             0.0002  1  0.9887564    
-TypeCulture            17.8112  2  0.0001356 ***
-IFT_T                   5.3262  1  0.0210074 *  
-IFT_Herbicide2013_2019  6.3312  1  0.0118630 *  
-CoefN                  26.7796  1   2.28e-07 ***
+annee                   1.9067  1  0.1673273    
+JulianDay               0.5371  1  0.4636335    
+RisqueDebordement       0.6539  1  0.4187298    
+exposition2             0.0013  1  0.9711520    
+TypeCulture            17.7679  2  0.0001386 ***
+IFT_T                   5.2273  1  0.0222346 *  
+IFT_Herbicide2013_2019  6.1981  1  0.0127885 *  
+CoefN                  26.5471  1  2.572e-07 ***
 
-           R2m       R2c
-[1,] 0.1507472 0.5224112
+Fixed effects:
+                         Estimate Std. Error t value
+(Intercept)             31.373371  22.848972   1.373
+annee                   -0.015654   0.011337  -1.381
+JulianDay               -0.025070   0.034207  -0.733
+RisqueDebordement        0.034098   0.042168   0.809
+exposition2Semi ombrage  0.005543   0.153269   0.036
+TypeCultureMaraichage   -0.098724   0.214568  -0.460
+TypeCultureVigne         0.833400   0.201875   4.128
+IFT_T                   -0.178851   0.078226  -2.286
+IFT_Herbicide2013_2019   0.122013   0.049009   2.490
+CoefN                   -0.285802   0.055470  -5.152
+
+R2m       R2c
+0.1451026 0.5167125
 
 
 #### A.III.3.4. Test spatial autocorrelation
@@ -666,32 +654,28 @@ summary(mod_prat_best)
 Anova(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
 ```
-Fixed effects:
-                           Estimate Std. Error t value
-(Intercept)                 0.04573    0.12660   0.361
-annee2014                   0.09923    0.12347   0.804
-annee2015                  -0.03433    0.12286  -0.279
-annee2016                   0.02637    0.12446   0.212
-annee2017                  -0.22816    0.12455  -1.832
-annee2018                  -0.01223    0.12196  -0.100
-JulianDay                   0.01924    0.05781   0.333
-RisqueDebordement          -0.07105    0.08336  -0.852
-exposition2Semi ombrage    -0.21295    0.21710  -0.981
-TypeCultureMaraichage       0.29403    0.29724   0.989
-TypeCultureVigne            0.11523    0.26252   0.439
-SC_Year_Copper.compounds.1 -0.14958    0.04067  -3.678
-
 Response: FRic_flow
                              Chisq Df Pr(>Chisq)    
-annee                       7.5042  5  0.1857596    
-JulianDay                   0.1108  1  0.7392696    
-RisqueDebordement           0.7264  1  0.3940618    
-exposition2                 0.9622  1  0.3266369    
-TypeCulture                 1.0874  2  0.5806104    
-SC_Year_Copper.compounds.1 13.5264  1  0.0002352 ***
+annee                       1.5516  1  0.2128984    
+JulianDay                   0.0436  1  0.8346721    
+RisqueDebordement           0.7832  1  0.3761739    
+exposition2                 0.9700  1  0.3246693    
+TypeCulture                 1.1004  2  0.5768418    
+SC_Year_Copper.compounds.1 12.9919  1  0.0003128 ***
 
-            R2m       R2c
-[1,] 0.05165736 0.4813883
+Fixed effects:
+                           Estimate Std. Error t value
+(Intercept)                52.82045   42.38439   1.246
+annee                      -0.02619    0.02103  -1.246
+JulianDay                   0.01203    0.05765   0.209
+RisqueDebordement          -0.07340    0.08294  -0.885
+exposition2Semi ombrage    -0.21259    0.21585  -0.985
+TypeCultureMaraichage       0.29907    0.29555   1.012
+TypeCultureVigne            0.10152    0.26090   0.389
+SC_Year_Copper.compounds.1 -0.14587    0.04047  -3.604
+
+R2m       R2c
+0.04337273 0.4708921
 
 
 #### B.I.3.4. Test spatial autocorrelation
@@ -715,30 +699,26 @@ summary(m0_best)
 Anova(m0_best)
 r.squaredGLMM(m0_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)              0.15230    0.12735   1.196
-annee2014               -0.01021    0.08592  -0.119
-annee2015                0.17517    0.09247   1.894
-annee2016                0.13003    0.08664   1.501
-annee2017                0.02187    0.08800   0.249
-annee2018                0.05900    0.08786   0.672
-JulianDay               -0.16460    0.03928  -4.190
-RisqueDebordement       -0.11587    0.05863  -1.976
-exposition2Semi ombrage  0.03760    0.25837   0.146
-TypeCultureMaraichage   -0.05884    0.18569  -0.317
-TypeCultureVigne        -0.44505    0.14181  -3.138
-
 Response: FRic_flow
                     Chisq Df Pr(>Chisq)    
-annee              6.7292  5   0.241573    
-JulianDay         17.5563  1  2.789e-05 ***
-RisqueDebordement  3.9052  1   0.048137 *  
-exposition2        0.0212  1   0.884290    
-TypeCulture       11.5348  2   0.003128 ** 
+annee              0.5761  1   0.447838    
+JulianDay         16.6060  1    4.6e-05 ***
+RisqueDebordement  3.7310  1   0.053410 .  
+exposition2        0.0280  1   0.867130    
+TypeCulture       11.5953  2   0.003035 ** 
 
-            R2m       R2c
-[1,] 0.09671078 0.5220219
+Fixed effects:
+                         Estimate Std. Error t value
+(Intercept)             -22.70273   30.18652  -0.752
+annee                     0.01137    0.01498   0.759
+JulianDay                -0.15927    0.03908  -4.075
+RisqueDebordement        -0.11311    0.05856  -1.932
+exposition2Semi ombrage   0.04319    0.25816   0.167
+TypeCultureMaraichage    -0.05511    0.18554  -0.297
+TypeCultureVigne         -0.44474    0.14170  -3.139
+
+R2m      R2c
+0.09091309 0.517543
 
 
 ### B.II.2. Type de production 
@@ -795,30 +775,26 @@ summary(m0_best)
 Anova(m0_best)
 r.squaredGLMM(m0_best)
 ```
-Fixed effects:
-                         Estimate Std. Error t value
-(Intercept)             -0.118090   0.071202  -1.659
-annee2014                0.006979   0.073623   0.095
-annee2015                0.061026   0.074966   0.814
-annee2016                0.157188   0.073632   2.135
-annee2017                0.020824   0.073829   0.282
-annee2018                0.120683   0.074353   1.623
-JulianDay               -0.178528   0.038058  -4.691
-RisqueDebordement        0.025822   0.046399   0.557
-exposition2Semi ombrage  0.509558   0.167887   3.035
-TypeCultureMaraichage   -0.220720   0.232337  -0.950
-TypeCultureVigne         0.094575   0.196923   0.480
-
 Response: FRic_flow
                     Chisq Df Pr(>Chisq)    
-annee              7.7404  5   0.171133    
-JulianDay         22.0046  1   2.72e-06 ***
-RisqueDebordement  0.3097  1   0.577857    
-exposition2        9.2120  1   0.002404 ** 
-TypeCulture        1.1923  2   0.550935   
+annee              2.8713  1    0.09017 .  
+JulianDay         21.2158  1  4.104e-06 ***
+RisqueDebordement  0.2740  1    0.60064    
+exposition2        9.1040  1    0.00255 ** 
+TypeCulture        1.1910  2    0.55128 
 
-            R2m       R2c
-[1,] 0.04242915 0.4526212
+Fixed effects:
+                         Estimate Std. Error t value
+(Intercept)             -43.12775   25.41743  -1.697
+annee                     0.02137    0.01261   1.695
+JulianDay                -0.17450    0.03788  -4.606
+RisqueDebordement         0.02430    0.04641   0.523
+exposition2Semi ombrage   0.50683    0.16797   3.017
+TypeCultureMaraichage    -0.22088    0.23248  -0.950
+TypeCultureVigne          0.09436    0.19704   0.479
+
+R2m       R2c
+0.03991044 0.4514136
 
 ### B.III.2. Type de production
 
@@ -879,37 +855,34 @@ ns
 ```{r}
 mod_prat <- lmer(FRic_flow ~  annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture+IFT_Hors_Herbicide2013_2019 +IFT_Herbicide2013_2019+DivRotation+CoefN+SC_Year_Copper.compounds.1+ (1| code_parcelle)  , data=predictors_clust3_FRic_flow, REML=F, na.action="na.fail")
 dredge(mod_prat)
-mod_prat_best <- lmer(FRic_flow ~ annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture+IFT_Herbicide2013_2019 + (1| code_parcelle)  , data=predictors_clust3_FDiv_flow, REML=T, na.action="na.fail")
+mod_prat_best <- lmer(FRic_flow ~ annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture+IFT_Herbicide2013_2019 + (1| code_parcelle)  , data=predictors_clust3_FRic_flow, REML=T, na.action="na.fail")
 summary(mod_prat_best)
 Anova(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
 ```
-Fixed effects:
-                         Estimate Std. Error t value
-(Intercept)             -0.080494   0.073174  -1.100
-annee2014                0.007085   0.073632   0.096
-annee2015                0.061984   0.074974   0.827
-annee2016                0.158274   0.073641   2.149
-annee2017                0.022222   0.073839   0.301
-annee2018                0.122058   0.074360   1.641
-JulianDay               -0.178882   0.037987  -4.709
-RisqueDebordement        0.025568   0.046104   0.555
-exposition2Semi ombrage  0.504471   0.166610   3.028
-TypeCultureMaraichage   -0.298216   0.233613  -1.277
-TypeCultureVigne         0.002109   0.200452   0.011
-IFT_Herbicide2013_2019  -0.095093   0.045960  -2.069
-
 Response: FRic_flow
                          Chisq Df Pr(>Chisq)    
-annee                   7.8292  5   0.165905    
-JulianDay              22.1745  1   2.49e-06 ***
-RisqueDebordement       0.3075  1   0.579194    
-exposition2             9.1679  1   0.002463 ** 
-TypeCulture             1.6467  2   0.438967    
-IFT_Herbicide2013_2019  4.2810  1   0.038541 *  
+annee                   2.9549  1   0.085617 .  
+JulianDay              21.3801  1  3.767e-06 ***
+RisqueDebordement       0.2719  1   0.602050    
+exposition2             9.0591  1   0.002614 ** 
+TypeCulture             1.6458  2   0.439166    
+IFT_Herbicide2013_2019  4.2735  1   0.038711 *  
 
-            R2m       R2c
-[1,] 0.05151227 0.4530969
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)             -43.716448  25.420046  -1.720
+annee                     0.021681   0.012612   1.719
+JulianDay                -0.174853   0.037815  -4.624
+RisqueDebordement         0.024050   0.046120   0.521
+exposition2Semi ombrage   0.501736   0.166699   3.010
+TypeCultureMaraichage    -0.298349   0.233762  -1.276
+TypeCultureVigne          0.001893   0.200580   0.009
+IFT_Herbicide2013_2019   -0.095075   0.045991  -2.067
+
+R2m       R2c
+0.04900982 0.4518945
+
 
 #### B.III.3.4. Test spatial autocorrelation
 ```{r}
@@ -1299,17 +1272,13 @@ r.squaredGLMM(m0_best)
 ```
 Fixed effects:
                         Estimate Std. Error t value
-(Intercept)              0.55500    0.11390   4.873
-annee2014                0.01064    0.11343   0.094
-annee2015                0.01363    0.11242   0.121
-annee2016               -0.11352    0.11411  -0.995
-annee2017               -0.11786    0.11458  -1.029
-annee2018               -0.11466    0.11163  -1.027
-JulianDay                0.03706    0.05298   0.700
-RisqueDebordement       -0.24367    0.07512  -3.244
-exposition2Semi ombrage -0.12169    0.19510  -0.624
-TypeCultureMaraichage   -0.43081    0.26771  -1.609
-TypeCultureVigne        -0.05007    0.23166  -0.216
+(Intercept)             62.46247   38.47460   1.623
+annee                   -0.03074    0.01909  -1.610
+JulianDay                0.03248    0.05245   0.619
+RisqueDebordement       -0.24427    0.07485  -3.264
+exposition2Semi ombrage -0.11830    0.19439  -0.609
+TypeCultureMaraichage   -0.42827    0.26675  -1.605
+TypeCultureVigne        -0.05530    0.23078  -0.240
 
 Response: nat_val_100
                     Chisq Df Pr(>Chisq)   
@@ -1321,7 +1290,7 @@ TypeCulture        2.5907  2    0.27380
 
 
            R2m       R2c
-[1,] 0.1074643 0.4997029
+[1,] 0.1074643 0.5001871
 
 
 ### D.I.2. Type de production
@@ -1349,31 +1318,27 @@ Anova(mod_bord_best)
 r.squaredGLMM(mod_bord_best)
 ```
 Fixed effects:
-                         Estimate Std. Error t value
-(Intercept)              0.514256   0.111475   4.613
-Bordure_Largeur          0.149286   0.053051   2.814
-annee2014                0.002800   0.113508   0.025
-annee2015                0.001904   0.112508   0.017
-annee2016               -0.121578   0.114183  -1.065
-annee2017               -0.125989   0.114648  -1.099
-annee2018               -0.130912   0.111700  -1.172
-JulianDay                0.022751   0.052603   0.432
-RisqueDebordement       -0.217456   0.071829  -3.027
-exposition2Semi ombrage -0.138639   0.184859  -0.750
-TypeCultureMaraichage   -0.314166   0.256803  -1.223
-TypeCultureVigne        -0.077134   0.219391  -0.352
+                        Estimate Std. Error t value
+(Intercept)             67.02780   38.48780   1.742
+Bordure_Largeur          0.15019    0.05282   2.844
+annee                   -0.03303    0.01910  -1.730
+JulianDay                0.01867    0.05207   0.359
+RisqueDebordement       -0.21769    0.07152  -3.044
+exposition2Semi ombrage -0.13569    0.18406  -0.737
+TypeCultureMaraichage   -0.31133    0.25570  -1.218
+TypeCultureVigne        -0.08201    0.21840  -0.376
 
 Response: nat_val_100
                    Chisq Df Pr(>Chisq)   
-Bordure_Largeur   7.9187  1   0.004893 **
-annee             3.7624  5   0.584104   
-JulianDay         0.1871  1   0.665381   
-RisqueDebordement 9.1652  1   0.002467 **
-exposition2       0.5625  1   0.453271   
-TypeCulture       1.5466  2   0.461498 
+Bordure_Largeur   8.0858  1   0.004461 **
+annee             2.9921  1   0.083669 . 
+JulianDay         0.1286  1   0.719891   
+RisqueDebordement 9.2635  1   0.002338 **
+exposition2       0.5435  1   0.460993   
+TypeCulture       1.5437  2   0.462155  
 
-         R2m       R2c
-[1,] 0.15777 0.4984401
+R2m       R2c
+0.1583012 0.4989521
 
 #### D.I.3.3. Pratiques intra-parcellaires
 ```{r}
@@ -1407,29 +1372,25 @@ Anova(m0_best)
 r.squaredGLMM(m0_best)
 ```
 Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)             -0.10926    0.12670  -0.862
-annee2014                0.22395    0.08687   2.578
-annee2015                0.38320    0.09387   4.082
-annee2016                0.29103    0.08778   3.315
-annee2017                0.47551    0.08934   5.323
-annee2018                0.50449    0.08879   5.682
-JulianDay                0.08535    0.03933   2.170
-RisqueDebordement       -0.07997    0.05811  -1.376
-exposition2Semi ombrage -0.05776    0.25591  -0.226
-TypeCultureMaraichage   -0.50994    0.18386  -2.774
-TypeCultureVigne        -0.22877    0.14039  -1.630
+                          Estimate Std. Error t value
+(Intercept)             -184.22878   30.52629  -6.035
+annee                      0.09150    0.01515   6.041
+JulianDay                  0.07975    0.03919   2.035
+RisqueDebordement         -0.08312    0.05815  -1.429
+exposition2Semi ombrage   -0.05284    0.25623  -0.206
+TypeCultureMaraichage     -0.50425    0.18409  -2.739
+TypeCultureVigne          -0.22591    0.14057  -1.607
 
 Response: nat_val_100
                     Chisq Df Pr(>Chisq)    
-annee             43.4708  5  2.966e-08 ***
-JulianDay          4.7102  1    0.02998 *  
-RisqueDebordement  1.8939  1    0.16876    
-exposition2        0.0509  1    0.82143    
-TypeCulture        7.8366  2    0.01987 * 
+annee             36.4966  1  1.529e-09 ***
+JulianDay          4.1407  1    0.04186 *  
+RisqueDebordement  2.0434  1    0.15287    
+exposition2        0.0425  1    0.83661    
+TypeCulture        7.6421  2    0.02191 *  
 
-            R2m       R2c
-[1,] 0.07064566 0.4942056
+R2m       R2c
+0.06544319 0.4910517
 
 ### D.II.2. Type de production 
 
@@ -1494,34 +1455,30 @@ summary(mod_prat_best)
 Anova(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)             -0.16306    0.12412  -1.314
-annee2014                0.22543    0.08660   2.603
-annee2015                0.38369    0.09355   4.101
-annee2016                0.28868    0.08750   3.299
-annee2017                0.47965    0.08902   5.388
-annee2018                0.50772    0.08847   5.739
-JulianDay                0.10586    0.03825   2.768
-RisqueDebordement       -0.09438    0.05511  -1.713
-exposition2Semi ombrage -0.06965    0.24302  -0.287
-TypeCultureMaraichage   -0.60618    0.18356  -3.302
-TypeCultureVigne        -0.10265    0.18289  -0.561
-IFT_T                   -0.14538    0.05296  -2.745
-IFT_Herbicide2013_2019  -0.19466    0.09453  -2.059
-
 Response: nat_val_100
                          Chisq Df Pr(>Chisq)    
-annee                  44.4234  5    1.9e-08 ***
-JulianDay               7.6613  1   0.005642 ** 
-RisqueDebordement       2.9335  1   0.086761 .  
-exposition2             0.0821  1   0.774426    
-TypeCulture            12.4325  2   0.001997 ** 
-IFT_T                   7.5368  1   0.006045 ** 
-IFT_Herbicide2013_2019  4.2402  1   0.039476 *
+annee                  37.0327  1  1.162e-09 ***
+JulianDay               6.9396  1   0.008431 ** 
+RisqueDebordement       3.1325  1   0.076745 .  
+exposition2             0.0711  1   0.789753    
+TypeCulture            12.1762  2   0.002270 ** 
+IFT_T                   7.4649  1   0.006291 ** 
+IFT_Herbicide2013_2019  4.1794  1   0.040918 *  
 
-           R2m       R2c
-[1,] 0.1112875 0.4823419
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)             -185.50858   30.50588  -6.081
+annee                      0.09211    0.01514   6.085
+JulianDay                  0.10060    0.03819   2.634
+RisqueDebordement         -0.09765    0.05517  -1.770
+exposition2Semi ombrage   -0.06490    0.24342  -0.267
+TypeCultureMaraichage     -0.60013    0.18386  -3.264
+TypeCultureVigne          -0.09968    0.18319  -0.544
+IFT_T                     -0.14494    0.05305  -2.732
+IFT_Herbicide2013_2019    -0.19355    0.09468  -2.044
+
+R2m       R2c
+0.1057099 0.4772546
 
 #### D.II.3.4. Test spatial autocorrelation
 ```{r}
@@ -1546,30 +1503,26 @@ summary(m0_best)
 Anova(m0_best)
 r.squaredGLMM(m0_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)             -0.27290    0.06977  -3.912
-annee2014                0.15831    0.07089   2.233
-annee2015                0.19858    0.07256   2.737
-annee2016                0.15485    0.07126   2.173
-annee2017                0.11468    0.07141   1.606
-annee2018                0.13428    0.07183   1.869
-JulianDay               -0.06716    0.03694  -1.818
-RisqueDebordement       -0.13316    0.04582  -2.906
-exposition2Semi ombrage  0.39639    0.16684   2.376
-TypeCultureMaraichage   -0.38295    0.23045  -1.662
-TypeCultureVigne         0.39523    0.19578   2.019
-
 Response: nat_val_100
                    Chisq Df Pr(>Chisq)   
-annee             9.0438  5   0.107329   
-JulianDay         3.3055  1   0.069050 . 
-RisqueDebordement 8.4439  1   0.003663 **
-exposition2       5.6449  1   0.017506 * 
-TypeCulture       7.2652  2   0.026448 * 
+annee             1.4449  1   0.229356   
+JulianDay         3.0794  1   0.079289 . 
+RisqueDebordement 8.6770  1   0.003223 **
+exposition2       5.5935  1   0.018028 * 
+TypeCulture       7.2682  2   0.026408 *
 
-            R2m       R2c
-[1,] 0.05146949 0.4726838
+Fixed effects:
+                         Estimate Std. Error t value
+(Intercept)             -29.71095   24.59393  -1.208
+annee                     0.01467    0.01220   1.202
+JulianDay                -0.06459    0.03681  -1.755
+RisqueDebordement        -0.13493    0.04581  -2.946
+exposition2Semi ombrage   0.39430    0.16672   2.365
+TypeCultureMaraichage    -0.37973    0.23033  -1.649
+TypeCultureVigne          0.39723    0.19565   2.030
+
+R2m       R2c
+0.04857071 0.4696028
 
 ### D.III.2. Type de production
 
@@ -1634,36 +1587,32 @@ summary(mod_prat_best)
 Anova(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)             -0.05508    0.07593  -0.725
-IFT_H                   -0.35889    0.06721  -5.340
-p_bio                   -0.16167    0.06455  -2.505
-annee2014                0.15685    0.07092   2.212
-annee2015                0.20075    0.07257   2.766
-annee2016                0.15326    0.07127   2.150
-annee2017                0.11739    0.07142   1.644
-annee2018                0.14036    0.07181   1.955
-JulianDay               -0.04929    0.03647  -1.352
-RisqueDebordement       -0.13634    0.04329  -3.150
-exposition2Semi ombrage  0.31378    0.15565   2.016
-TypeCultureMaraichage   -0.48955    0.21717  -2.254
-TypeCultureVigne        -0.02077    0.19427  -0.107
-IFT_Herbicide2013_2019  -0.10869    0.04439  -2.448
-
 Response: nat_val_100
                          Chisq Df Pr(>Chisq)    
-IFT_H                  28.5156  1  9.295e-08 ***
-p_bio                   6.2729  1   0.012260 *  
-annee                   9.1148  5   0.104572    
-JulianDay               1.8268  1   0.176501    
-RisqueDebordement       9.9205  1   0.001634 ** 
-exposition2             4.0638  1   0.043813 *  
-TypeCulture             5.0910  2   0.078436 .  
-IFT_Herbicide2013_2019  5.9949  1   0.014347 *
+IFT_H                  28.7234  1  8.349e-08 ***
+p_bio                   6.2324  1   0.012543 *  
+annee                   1.6733  1   0.195814    
+JulianDay               1.6686  1   0.196442    
+RisqueDebordement      10.1684  1   0.001429 ** 
+exposition2             4.0209  1   0.044939 *  
+TypeCulture             5.0286  2   0.080918 .  
+IFT_Herbicide2013_2019  5.9321  1   0.014867 *  
 
-           R2m       R2c
-[1,] 0.1284753 0.4747136
+Fixed effects:
+                         Estimate Std. Error t value
+(Intercept)             -31.73293   24.58567  -1.291
+IFT_H                    -0.35981    0.06714  -5.359
+p_bio                    -0.16101    0.06449  -2.496
+annee                     0.01578    0.01220   1.294
+JulianDay                -0.04693    0.03633  -1.292
+RisqueDebordement        -0.13795    0.04326  -3.189
+exposition2Semi ombrage   0.31181    0.15550   2.005
+TypeCultureMaraichage    -0.48611    0.21700  -2.240
+TypeCultureVigne         -0.01971    0.19409  -0.102
+IFT_Herbicide2013_2019   -0.10802    0.04435  -2.436
+
+R2m       R2c
+0.1259419 0.4716975
 
 #### D.III.3.4. Test spatial autocorrelation
 ```{r}
@@ -1689,30 +1638,26 @@ summary(m0_best)
 Anova(m0_best)
 r.squaredGLMM(m0_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)              0.51813    0.12025   4.309
-annee2014               -0.27302    0.15583  -1.752
-annee2015               -0.33973    0.15407  -2.205
-annee2016               -0.14610    0.15635  -0.934
-annee2017               -0.10262    0.15696  -0.654
-annee2018               -0.32810    0.15279  -2.147
-JulianDay               -0.03899    0.06200  -0.629
-RisqueDebordement        0.10908    0.05881   1.855
-exposition2Semi ombrage  0.35499    0.15091   2.352
-TypeCultureMaraichage    0.20289    0.20561   0.987
-TypeCultureVigne        -0.54578    0.17687  -3.086
-
 Response: FDiv_flow
                     Chisq Df Pr(>Chisq)   
-annee              7.8238  5   0.166217   
-JulianDay          0.3953  1   0.529508   
-RisqueDebordement  3.4406  1   0.063613 . 
-exposition2        5.5336  1   0.018654 * 
-TypeCulture       11.3407  2   0.003447 **
+annee              1.1988  1   0.273568   
+JulianDay          0.1707  1   0.679473   
+RisqueDebordement  3.2956  1   0.069467 . 
+exposition2        5.1557  1   0.023170 * 
+TypeCulture       10.2277  2   0.006013 **
 
-            R2m       R2c
-[1,] 0.08709981 0.1742701
+Fixed effects:
+                        Estimate Std. Error t value
+(Intercept)             58.30293   52.96202   1.101
+annee                   -0.02877    0.02628  -1.095
+JulianDay               -0.02567    0.06212  -0.413
+RisqueDebordement        0.10806    0.05953   1.815
+exposition2Semi ombrage  0.34683    0.15275   2.271
+TypeCultureMaraichage    0.19226    0.20815   0.924
+TypeCultureVigne        -0.52514    0.17894  -2.935
+
+R2m      R2c
+0.07239602 0.165897
 
 ### E.I.2. Type de production
 ```{r}
@@ -1731,32 +1676,28 @@ summary(mod_pays_best)
 Anova(mod_pays_best)
 r.squaredGLMM(mod_pays_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)              0.57858    0.12111   4.777
-annee2014               -0.27792    0.15633  -1.778
-annee2015               -0.34764    0.15454  -2.250
-annee2016               -0.14701    0.15679  -0.938
-annee2017               -0.10789    0.15740  -0.685
-annee2018               -0.33987    0.15320  -2.219
-JulianDay               -0.06835    0.06223  -1.098
-RisqueDebordement        0.10875    0.05590   1.946
-exposition2Semi ombrage  0.35091    0.14349   2.445
-TypeCultureMaraichage    0.19067    0.19545   0.976
-TypeCultureVigne        -0.44969    0.17343  -2.593
-IFT_H                    0.17479    0.07593   2.302
-
 Response: FDiv_flow
                    Chisq Df Pr(>Chisq)  
-annee             8.1979  5    0.14566  
-JulianDay         1.2066  1    0.27201  
-RisqueDebordement 3.7853  1    0.05171 .
-exposition2       5.9804  1    0.01447 *
-TypeCulture       8.2930  2    0.01582 *
-IFT_H             5.2996  1    0.02133 *
+annee             1.3255  1    0.24960  
+JulianDay         0.7673  1    0.38106  
+RisqueDebordement 3.6072  1    0.05753 .
+exposition2       5.5530  1    0.01845 *
+TypeCulture       7.3703  2    0.02509 *
+IFT_H             4.9837  1    0.02559 *
 
-          R2m       R2c
-[1,] 0.104255 0.1665636
+Fixed effects:
+                        Estimate Std. Error t value
+(Intercept)             61.49891   53.09514   1.158
+annee                   -0.03033    0.02634  -1.151
+JulianDay               -0.05466    0.06240  -0.876
+RisqueDebordement        0.10765    0.05668   1.899
+exposition2Semi ombrage  0.34284    0.14549   2.356
+TypeCultureMaraichage    0.18062    0.19820   0.911
+TypeCultureVigne        -0.43014    0.17580  -2.447
+IFT_H                    0.17189    0.07700   2.232
+
+R2m       R2c
+0.08900119 0.1576376
 
 
 #### E.I.3.2. Pratiques de gestion de la bordure
@@ -1849,8 +1790,34 @@ ns
 mod_prat <- lmer(FDiv_flow ~ annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture+ IFT_Hors_Herbicide2013_2019 +IFT_Herbicide2013_2019+CoefN+SC_Year_Copper.compounds.1+ (1| code_parcelle)  , data=predictors_clust2_FDiv_flow, REML=F, na.action="na.fail")
 vif(mod_prat) 
 dredge(mod_prat)
+
+mod_prat_best <- lmer(FDiv_flow ~ annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture +IFT_Herbicide2013_2019+ (1| code_parcelle)  , data=predictors_clust2_FDiv_flow, REML=T, na.action="na.fail")
+summary(mod_prat_best)
+Anova(mod_prat_best)
+r.squaredGLMM(mod_prat_best)
 ```
-ns
+Response: FDiv_flow
+                        Chisq Df Pr(>Chisq)  
+annee                  0.0659  1    0.79745  
+JulianDay              2.2567  1    0.13303  
+RisqueDebordement      4.0122  1    0.04517 *
+exposition2            0.3086  1    0.57856  
+TypeCulture            1.3679  2    0.50463  
+IFT_Herbicide2013_2019 5.1499  1    0.02325 *
+
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)             -10.001198  38.546728  -0.259
+annee                     0.004909   0.019126   0.257
+JulianDay                -0.057369   0.038189  -1.502
+RisqueDebordement        -0.098022   0.048937  -2.003
+exposition2Semi ombrage   0.117506   0.211536   0.555
+TypeCultureMaraichage     0.104085   0.160157   0.650
+TypeCultureVigne          0.155215   0.132717   1.170
+IFT_Herbicide2013_2019    0.189440   0.083478   2.269
+
+R2m       R2c
+0.02261964 0.2112426
 
 #### E.II.3.4. Test spatial autocorrelation
 ```{r}
@@ -1915,37 +1882,32 @@ summary(mod_pays_best)
 Anova(mod_pays_best)
 r.squaredGLMM(mod_pays_best)
 ```
-Fixed effects:
-                          Estimate Std. Error t value
-(Intercept)              0.0478426  0.0762174   0.628
-annee2014                0.0399322  0.0863796   0.462
-annee2015               -0.0690140  0.0878341  -0.786
-annee2016               -0.0648477  0.0863374  -0.751
-annee2017                0.0208407  0.0864952   0.241
-annee2018               -0.1140465  0.0869452  -1.312
-JulianDay               -0.1023862  0.0398737  -2.568
-RisqueDebordement       -0.0107362  0.0396592  -0.271
-exposition2Semi ombrage  0.1150908  0.1373274   0.838
-TypeCultureMaraichage   -0.0001758  0.1913523  -0.001
-TypeCultureVigne         0.0167196  0.1679958   0.100
-IFT_H                   -0.0990547  0.0491556  -2.015
-
 Response: FDiv_flow
                    Chisq Df Pr(>Chisq)  
-annee             4.7955  5    0.44134  
-JulianDay         6.5934  1    0.01024 *
-RisqueDebordement 0.0733  1    0.78661  
-exposition2       0.7024  1    0.40199  
-TypeCulture       0.0100  2    0.99503  
-IFT_H             4.0607  1    0.04389 *
+annee             1.4676  1    0.22572  
+JulianDay         6.5183  1    0.01068 *
+RisqueDebordement 0.0612  1    0.80468  
+exposition2       0.6855  1    0.40770  
+TypeCulture       0.0120  2    0.99400  
+IFT_H             4.1390  1    0.04191 *
+
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)             35.9747612 29.6804294   1.212
+annee                   -0.0178405  0.0147264  -1.211
+JulianDay               -0.1013701  0.0397048  -2.553
+RisqueDebordement       -0.0098044  0.0396470  -0.247
+exposition2Semi ombrage  0.1136626  0.1372821   0.828
+TypeCultureMaraichage   -0.0009369  0.1913206  -0.005
+TypeCultureVigne         0.0182953  0.1679690   0.109
+IFT_H                   -0.0999672  0.0491369  -2.034
 
             R2m       R2c
-[1,] 0.01996947 0.2192151
-
+[1,] 0.01781599 0.2176186
 
 #### E.III.3.2. Pratiques de gestion de la bordure
 ```{r}
-mod_bord <- lmer(FDiv_flow ~ annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture+ Bordure_Largeur+Bordure_BroyageFauchage_ramassage+ Bordure_BroyageFauchage_SansRamassage+Bordure_NombreInterventionYEAR+ (1| code_parcelle)  , data=predictors_clust3_FDiv_flow, REML=F, na.action="na.fail")
+mod_bord <- lmer(FDiv_flow ~ annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture+ IFT_H+Bordure_Largeur+Bordure_BroyageFauchage_ramassage+ Bordure_BroyageFauchage_SansRamassage+Bordure_NombreInterventionYEAR+ (1| code_parcelle)  , data=predictors_clust3_FDiv_flow, REML=F, na.action="na.fail")
 dredge(mod_bord)
 ```
 ns
@@ -1980,30 +1942,26 @@ summary(m0_best)
 Anova(m0_best)
 r.squaredGLMM(m0_best)
 ```
-Fixed effects:
-                         Estimate Std. Error t value
-(Intercept)              0.437935   0.113822   3.848
-annee2014               -0.045260   0.108899  -0.416
-annee2015               -0.005888   0.107941  -0.055
-annee2016               -0.073026   0.109563  -0.667
-annee2017               -0.231391   0.110018  -2.103
-annee2018               -0.029414   0.107252  -0.274
-JulianDay                0.133399   0.051419   2.594
-RisqueDebordement       -0.324355   0.076741  -4.227
-exposition2Semi ombrage -0.071838   0.200136  -0.359
-TypeCultureMaraichage   -0.374063   0.274669  -1.362
-TypeCultureVigne        -0.053118   0.237817  -0.223
-
 Response: perennial_100
                     Chisq Df Pr(>Chisq)    
-annee              6.0663  5   0.299817    
-JulianDay          6.7308  1   0.009476 ** 
-RisqueDebordement 17.8643  1  2.372e-05 ***
-exposition2        0.1288  1   0.719636    
-TypeCulture        1.8594  2   0.394680 
+annee              1.2794  1    0.25801    
+JulianDay          6.1307  1    0.01329 *  
+RisqueDebordement 18.0971  1  2.099e-05 ***
+exposition2        0.1250  1    0.72364    
+TypeCulture        1.8418  2    0.39816    
 
-          R2m       R2c
-[1,] 0.166513 0.5673023
+Fixed effects:
+                        Estimate Std. Error t value
+(Intercept)             42.40512   37.15459   1.141
+annee                   -0.02085    0.01843  -1.131
+JulianDay                0.12669    0.05117   2.476
+RisqueDebordement       -0.32713    0.07690  -4.254
+exposition2Semi ombrage -0.07092    0.20056  -0.354
+TypeCultureMaraichage   -0.37255    0.27527  -1.353
+TypeCultureVigne        -0.06062    0.23829  -0.254
+
+R2m      R2c
+0.1619783 0.565713
 
 ### F.I.2. Type de production
 ```{r}
@@ -2033,32 +1991,28 @@ summary(mod_bord_best)
 Anova(mod_bord_best)
 r.squaredGLMM(mod_bord_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)              0.38987    0.11116   3.507
-annee2014               -0.05080    0.10887  -0.467
-annee2015               -0.01463    0.10792  -0.136
-annee2016               -0.07870    0.10953  -0.719
-annee2017               -0.23681    0.10998  -2.153
-annee2018               -0.04115    0.10722  -0.384
-JulianDay                0.12805    0.05104   2.509
-RisqueDebordement       -0.29769    0.07327  -4.063
-exposition2Semi ombrage -0.09480    0.18931  -0.501
-TypeCultureMaraichage   -0.24429    0.26305  -0.929
-TypeCultureVigne        -0.08160    0.22483  -0.363
-Bordure_Largeur          0.16078    0.05429   2.961
-
 Response: perennial_100
                     Chisq Df Pr(>Chisq)    
-annee              6.0531  5   0.301091    
-JulianDay          6.2936  1   0.012118 *  
-RisqueDebordement 16.5061  1  4.849e-05 ***
-exposition2        0.2507  1   0.616548    
-TypeCulture        0.9333  2   0.627091    
-Bordure_Largeur    8.7701  1   0.003062 ** 
+annee              1.4866  1   0.222750    
+JulianDay          5.7583  1   0.016411 *  
+RisqueDebordement 16.7197  1  4.333e-05 ***
+exposition2        0.2481  1   0.618395    
+TypeCulture        0.9288  2   0.628510    
+Bordure_Largeur    9.0098  1   0.002685 ** 
 
-           R2m       R2c
-[1,] 0.2261201 0.5711561
+Fixed effects:
+                        Estimate Std. Error t value
+(Intercept)             45.60171   37.13546   1.228
+annee                   -0.02246    0.01842  -1.219
+JulianDay                0.12185    0.05078   2.400
+RisqueDebordement       -0.29984    0.07333  -4.089
+exposition2Semi ombrage -0.09436    0.18944  -0.498
+TypeCultureMaraichage   -0.24109    0.26324  -0.916
+TypeCultureVigne        -0.08897    0.22495  -0.395
+Bordure_Largeur          0.16306    0.05432   3.002
+
+R2m       R2c
+[1,] 0.2225766 0.5692581
 
 #### F.I.3.3. Pratiques intra-parcellaires
 ```{r}
@@ -2089,30 +2043,26 @@ summary(m0_best)
 Anova(m0_best)
 r.squaredGLMM(m0_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)             -0.26843    0.13408  -2.002
-annee2014                0.26866    0.07880   3.410
-annee2015                0.35725    0.08521   4.193
-annee2016                0.38156    0.07965   4.791
-annee2017                0.36964    0.08117   4.554
-annee2018                0.33463    0.08067   4.148
-JulianDay                0.34639    0.03897   8.888
-RisqueDebordement        0.05297    0.06229   0.850
-exposition2Semi ombrage  0.03381    0.27961   0.121
-TypeCultureMaraichage   -0.34136    0.20095  -1.699
-TypeCultureVigne        -0.14563    0.15327  -0.950
-
 Response: perennial_100
                     Chisq Df Pr(>Chisq)    
-annee             32.5162  5  4.694e-06 ***
-JulianDay         79.0024  1  < 2.2e-16 ***
-RisqueDebordement  0.7232  1     0.3951    
-exposition2        0.0146  1     0.9038    
-TypeCulture        2.9169  2     0.2326  
+annee             17.6281  1  2.686e-05 ***
+JulianDay         82.0000  1  < 2.2e-16 ***
+RisqueDebordement  0.8113  1     0.3677    
+exposition2        0.0195  1     0.8888    
+TypeCulture        2.8528  2     0.2402   
+
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)             -117.33488   27.94810  -4.198
+annee                      0.05822    0.01387   4.199
+JulianDay                  0.35191    0.03886   9.055
+RisqueDebordement          0.05589    0.06205   0.901
+exposition2Semi ombrage    0.03891    0.27830   0.140
+TypeCultureMaraichage     -0.33570    0.20000  -1.678
+TypeCultureVigne          -0.14502    0.15256  -0.951
 
            R2m       R2c
-[1,] 0.1691099 0.6392801
+[1,] 0.1670888 0.6318746
 
 ### F.II.2. Type de production 
 
@@ -2132,32 +2082,28 @@ summary(mod_bord_best)
 Anova(mod_bord_best)
 r.squaredGLMM(mod_bord_best)
 ```
-Fixed effects:
-                         Estimate Std. Error t value
-(Intercept)             -0.222921   0.135795  -1.642
-annee2014                0.265356   0.078581   3.377
-annee2015                0.352974   0.084986   4.153
-annee2016                0.382459   0.079417   4.816
-annee2017                0.362429   0.081005   4.474
-annee2018                0.326920   0.080518   4.060
-JulianDay                0.311302   0.042117   7.391
-RisqueDebordement        0.055035   0.062306   0.883
-exposition2Semi ombrage  0.128022   0.283222   0.452
-TypeCultureMaraichage   -0.306193   0.201736  -1.518
-TypeCultureVigne        -0.007752   0.166369  -0.047
-IFT_H                    0.201521   0.094224   2.139
-
 Response: perennial_100
                     Chisq Df Pr(>Chisq)    
-annee             32.0161  5  5.898e-06 ***
-JulianDay         54.6313  1  1.454e-13 ***
-RisqueDebordement  0.7802  1    0.37707    
-exposition2        0.2043  1    0.65125    
-TypeCulture        2.8444  2    0.24118    
-IFT_H              4.5743  1    0.03246 *
+annee             16.9365  1  3.865e-05 ***
+JulianDay         57.0924  1  4.158e-14 ***
+RisqueDebordement  0.8770  1    0.34901    
+exposition2        0.2164  1    0.64178    
+TypeCulture        2.7510  2    0.25271    
+IFT_H              4.4125  1    0.03568 * 
 
-           R2m       R2c
-[1,] 0.2069652 0.6573052
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)             -114.75572   27.89710  -4.114
+annee                      0.05696    0.01384   4.115
+JulianDay                  0.31748    0.04202   7.556
+RisqueDebordement          0.05814    0.06208   0.937
+exposition2Semi ombrage    0.13116    0.28194   0.465
+TypeCultureMaraichage     -0.30118    0.20082  -1.500
+TypeCultureVigne          -0.01032    0.16560  -0.062
+IFT_H                      0.19707    0.09382   2.101
+
+         R2m       R2c
+[1,] 0.20413 0.6498714
 
 #### F.II.3.2. Pratiques de gestion de la bordure
 ```{r}
@@ -2168,34 +2114,30 @@ summary(mod_bord_best)
 Anova(mod_bord_best)
 r.squaredGLMM(mod_bord_best)
 ```
-Fixed effects:
-                               Estimate Std. Error t value
-(Intercept)                    -0.23830    0.13611  -1.751
-annee2014                       0.27187    0.07828   3.473
-annee2015                       0.36154    0.08468   4.270
-annee2016                       0.39653    0.07926   5.003
-annee2017                       0.37159    0.08073   4.603
-annee2018                       0.32670    0.08016   4.076
-JulianDay                       0.31520    0.04207   7.493
-RisqueDebordement               0.05767    0.06240   0.924
-exposition2Semi ombrage         0.12703    0.28384   0.448
-TypeCultureMaraichage          -0.29190    0.20225  -1.443
-TypeCultureVigne                0.03350    0.16752   0.200
-IFT_H                           0.21783    0.09457   2.303
-Bordure_NombreInterventionYEAR -0.07254    0.02924  -2.481
-
 Response: perennial_100
                                  Chisq Df Pr(>Chisq)    
-annee                          33.9040  5  2.488e-06 ***
-JulianDay                      56.1377  1  6.757e-14 ***
-RisqueDebordement               0.8541  1    0.35540    
-exposition2                     0.2003  1    0.65449    
-TypeCulture                     3.0336  2    0.21942    
-IFT_H                           5.3050  1    0.02126 *  
-Bordure_NombreInterventionYEAR  6.1547  1    0.01311 * 
+annee                          17.2544  1  3.269e-05 ***
+JulianDay                      58.6136  1  1.919e-14 ***
+RisqueDebordement               0.9577  1     0.3278    
+exposition2                     0.2124  1     0.6449    
+TypeCulture                     2.8976  2     0.2348    
+IFT_H                           5.0169  1     0.0251 *  
+Bordure_NombreInterventionYEAR  4.6698  1     0.0307 *  
 
-           R2m      R2c
-[1,] 0.2102853 0.661714
+Fixed effects:
+                                 Estimate Std. Error t value
+(Intercept)                    -115.48871   27.81346  -4.152
+annee                             0.05732    0.01380   4.154
+JulianDay                         0.32161    0.04201   7.656
+RisqueDebordement                 0.06081    0.06214   0.979
+exposition2Semi ombrage           0.13011    0.28232   0.461
+TypeCultureMaraichage            -0.28853    0.20117  -1.434
+TypeCultureVigne                  0.02537    0.16662   0.152
+IFT_H                             0.21077    0.09410   2.240
+Bordure_NombreInterventionYEAR   -0.06350    0.02939  -2.161
+
+           R2m       R2c
+[1,] 0.2069178 0.6531321
 
 
 
@@ -2227,30 +2169,26 @@ summary(m0_best)
 Anova(m0_best)
 r.squaredGLMM(m0_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)             -0.11883    0.06290  -1.889
-annee2014                0.14319    0.06888   2.079
-annee2015                0.18864    0.07046   2.677
-annee2016                0.07905    0.06921   1.142
-annee2017                0.13601    0.06935   1.961
-annee2018                0.12776    0.06970   1.833
-JulianDay                0.15145    0.03460   4.377
-RisqueDebordement       -0.09634    0.03967  -2.429
-exposition2Semi ombrage  0.16831    0.14127   1.191
-TypeCultureMaraichage   -0.35992    0.19553  -1.841
-TypeCultureVigne         0.11422    0.16539   0.691
-
 Response: perennial_100
                     Chisq Df Pr(>Chisq)    
-annee              8.7483  5    0.11954    
-JulianDay         19.1556  1  1.205e-05 ***
-RisqueDebordement  5.8983  1    0.01516 *  
-exposition2        1.4194  1    0.23351    
-TypeCulture        4.0340  2    0.13306  
+annee              1.5678  1    0.21053    
+JulianDay         19.0465  1  1.276e-05 ***
+RisqueDebordement  5.9933  1    0.01436 *  
+exposition2        1.4365  1    0.23070    
+TypeCulture        3.9849  2    0.13636   
 
-            R2m       R2c
-[1,] 0.04397975 0.3852235
+Fixed effects:
+                         Estimate Std. Error t value
+(Intercept)             -29.88067   23.85787  -1.252
+annee                     0.01482    0.01184   1.252
+JulianDay                 0.15047    0.03448   4.364
+RisqueDebordement        -0.09700    0.03962  -2.448
+exposition2Semi ombrage   0.16905    0.14105   1.199
+TypeCultureMaraichage    -0.35639    0.19525  -1.825
+TypeCultureVigne          0.11494    0.16513   0.696
+
+R2m       R2c
+0.04036947 0.3808739
 
 ### F.III.2. Type de production
 
@@ -2270,32 +2208,29 @@ summary(mod_pays_best)
 Anova(mod_pays_best)
 r.squaredGLMM(mod_pays_best)
 ```
-Fixed effects:
-                        Estimate Std. Error t value
-(Intercept)             -0.15571    0.06407  -2.430
-annee2014                0.14197    0.06890   2.061
-annee2015                0.18921    0.07047   2.685
-annee2016                0.07814    0.06923   1.129
-annee2017                0.13755    0.06936   1.983
-annee2018                0.13088    0.06971   1.877
-JulianDay                0.15981    0.03462   4.617
-RisqueDebordement       -0.09099    0.03925  -2.318
-exposition2Semi ombrage  0.18101    0.13943   1.298
-TypeCultureMaraichage   -0.34177    0.19305  -1.770
-TypeCultureVigne         0.21642    0.16773   1.290
-IFT_T                   -0.18181    0.06973  -2.607
-
 Response: perennial_100
                     Chisq Df Pr(>Chisq)    
-annee              8.8466  5   0.115340    
-JulianDay         21.3123  1  3.902e-06 ***
-RisqueDebordement  5.3740  1   0.020439 *  
-exposition2        1.6854  1   0.194214    
-TypeCulture        5.1313  2   0.076868 .  
-IFT_T              6.7975  1   0.009129 ** 
+annee              1.7049  1   0.191651    
+JulianDay         21.1883  1  4.163e-06 ***
+RisqueDebordement  5.4625  1   0.019429 *  
+exposition2        1.7071  1   0.191367    
+TypeCulture        5.0924  2   0.078380 .  
+IFT_T              6.8384  1   0.008922 ** 
+
+Fixed effects:
+                         Estimate Std. Error t value
+(Intercept)             -31.20414   23.86452  -1.308
+annee                     0.01546    0.01184   1.306
+JulianDay                 0.15875    0.03449   4.603
+RisqueDebordement        -0.09161    0.03920  -2.337
+exposition2Semi ombrage   0.18187    0.13920   1.307
+TypeCultureMaraichage    -0.33824    0.19277  -1.755
+TypeCultureVigne          0.21718    0.16745   1.297
+IFT_T                    -0.18204    0.06961  -2.615
 
             R2m       R2c
-[1,] 0.05469231 0.3837859
+[1,] 0.05113773 0.3794381
+
 
 
 #### F.III.3.2. Pratiques de gestion de la bordure
@@ -2339,31 +2274,27 @@ summary(m0_best)
 Anova(m0_best)
 r.squaredGLMM(m0_best)
 ```
-Fixed effects:
-                         Estimate Std. Error t value
-(Intercept)              0.016309   0.115320   0.141
-annee2014               -0.001529   0.107885  -0.014
-annee2015               -0.024020   0.106940  -0.225
-annee2016                0.082398   0.108547   0.759
-annee2017                0.005741   0.108999   0.053
-annee2018                0.065533   0.106296   0.617
-JulianDay                0.072456   0.051216   1.415
-RisqueDebordement        0.214733   0.078595   2.732
-exposition2Semi ombrage -0.194525   0.205484  -0.947
-TypeCultureMaraichage   -0.574314   0.282032  -2.036
-TypeCultureVigne        -0.987795   0.244264  -4.044
-
-
 Response: weeds_100
                     Chisq Df Pr(>Chisq)    
-annee              1.5469  5   0.907590    
-JulianDay          2.0014  1   0.157153    
-RisqueDebordement  7.4646  1   0.006292 ** 
-exposition2        0.8962  1   0.343810    
-TypeCulture       18.8681  2  7.996e-05 ***
+annee              0.5372  1   0.463598    
+JulianDay          2.1437  1   0.143160    
+RisqueDebordement  7.5104  1   0.006134 ** 
+exposition2        0.9218  1   0.336993    
+TypeCulture       18.8535  2  8.054e-05 ***
+
+Fixed effects:
+                         Estimate Std. Error t value
+(Intercept)             -26.79521   36.61201  -0.732
+annee                     0.01331    0.01816   0.733
+JulianDay                 0.07422    0.05069   1.464
+RisqueDebordement         0.21519    0.07852   2.741
+exposition2Semi ombrage  -0.19717    0.20536  -0.960
+TypeCultureMaraichage    -0.57560    0.28188  -2.042
+TypeCultureVigne         -0.98619    0.24410  -4.040
 
            R2m       R2c
-[1,] 0.1808067 0.5927036
+[1,] 0.1812205 0.5951339
+
 
 
 ### G.I.2. Type de production
@@ -2383,32 +2314,28 @@ summary(mod_pays_best)
 Anova(mod_pays_best)
 r.squaredGLMM(mod_pays_best)
 ```
-Fixed effects:
-                          Estimate Std. Error t value
-(Intercept)              0.1969688  0.1435172   1.372
-annee2014               -0.0050419  0.1078510  -0.047
-annee2015               -0.0289263  0.1069144  -0.271
-annee2016                0.0771407  0.1085241   0.711
-annee2017                0.0003725  0.1089790   0.003
-annee2018                0.0606996  0.1062498   0.571
-JulianDay                0.0581774  0.0514616   1.131
-RisqueDebordement        0.2426642  0.0782818   3.100
-exposition2Semi ombrage -0.1616901  0.2014135  -0.803
-TypeCultureMaraichage   -0.6985186  0.2821682  -2.476
-TypeCultureVigne        -1.2444062  0.2690239  -4.626
-IFT_T                    0.2551467  0.1231822   2.071
-
 Response: weeds_100
                     Chisq Df Pr(>Chisq)    
-annee              1.5024  5   0.912797    
-JulianDay          1.2780  1   0.258265    
-RisqueDebordement  9.6092  1   0.001936 ** 
-exposition2        0.6445  1   0.422104    
-TypeCulture       23.9279  2   6.37e-06 ***
-IFT_T              4.2903  1   0.038331 *  
+annee              0.4721  1   0.492036    
+JulianDay          1.3976  1   0.237118    
+RisqueDebordement  9.6463  1   0.001897 ** 
+exposition2        0.6681  1   0.413722    
+TypeCulture       23.8828  2  6.515e-06 ***
+IFT_T              4.2717  1   0.038752 * 
+
+Fixed effects:
+                         Estimate Std. Error t value
+(Intercept)             -24.92942   36.59891  -0.681
+annee                     0.01248    0.01816   0.687
+JulianDay                 0.06021    0.05093   1.182
+RisqueDebordement         0.24295    0.07822   3.106
+exposition2Semi ombrage  -0.16456    0.20133  -0.817
+TypeCultureMaraichage    -0.69949    0.28209  -2.480
+TypeCultureVigne         -1.24204    0.26889  -4.619
+IFT_T                     0.25448    0.12313   2.067
 
            R2m       R2c
-[1,] 0.2053781 0.5939035
+[1,] 0.2058862 0.5964699
 
 #### G.I.3.2. Pratiques de gestion de la bordure
 ```{r}
@@ -2422,13 +2349,43 @@ ns
 mod_prat <- lmer(weeds_100 ~ IFT_T +annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture + IFT_Hors_Herbicide2013_2019 +IFT_Herbicide2013_2019+DivRotation+CoefN+SC_Year_Copper.compounds.1+ (1| code_parcelle)  , data=predictors_clust1, REML=F, na.action="na.fail")
 vif(mod_prat)
 dredge(mod_prat)
+
+mod_prat_best <- lmer(weeds_100 ~ IFT_T +annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture + IFT_Hors_Herbicide2013_2019 +DivRotation+(1| code_parcelle)  , data=predictors_clust1, REML=T, na.action="na.fail")
+summary(mod_prat_best)
+Anova(mod_prat_best)
+r.squaredGLMM(mod_prat_best)
 ```
-ns
+Fixed effects:
+                             Estimate Std. Error t value
+(Intercept)                 -23.73746   36.50962  -0.650
+IFT_T                         0.35372    0.12631   2.800
+annee                         0.01183    0.01811   0.653
+JulianDay                     0.05985    0.05050   1.185
+RisqueDebordement             0.27443    0.07603   3.610
+exposition2Semi ombrage      -0.12435    0.19328  -0.643
+TypeCultureMaraichage        -0.68162    0.27413  -2.486
+TypeCultureVigne             -0.48262    0.35895  -1.345
+IFT_Hors_Herbicide2013_2019  -0.23758    0.11144  -2.132
+DivRotation                   0.24892    0.09457   2.632
+
+Response: weeds_100
+                              Chisq Df Pr(>Chisq)    
+IFT_T                        7.8423  1  0.0051038 ** 
+annee                        0.4269  1  0.5135105    
+JulianDay                    1.4046  1  0.2359551    
+RisqueDebordement           13.0292  1  0.0003067 ***
+exposition2                  0.4139  1  0.5199835    
+TypeCulture                  7.0472  2  0.0294924 *  
+IFT_Hors_Herbicide2013_2019  4.5453  1  0.0330100 *  
+DivRotation                  6.9289  1  0.0084815 ** 
+
+           R2m       R2c
+[1,] 0.2553987 0.6029787
 
 
 #### G.I.3.4. Test spatial autocorrelation
 ```{r}
-mor=moran.test(resid(mod_pays_best), col.w.d_weeds_clust1, zero.policy=T)
+mor=moran.test(resid(mod_prat_best), col.w.d_weeds_clust1, zero.policy=T)
 mor
 ```
 not spacially autocorrelated
@@ -2449,30 +2406,27 @@ summary(m0_best)
 Anova(m0_best)
 r.squaredGLMM(m0_best)
 ```
-Fixed effects:
-                         Estimate Std. Error t value
-(Intercept)              0.180663   0.112285   1.609
-annee2014                0.007804   0.082622   0.094
-annee2015                0.018573   0.089244   0.208
-annee2016               -0.124726   0.083479  -1.494
-annee2017               -0.085296   0.084898  -1.005
-annee2018               -0.067716   0.084379  -0.803
-JulianDay                0.079364   0.035615   2.228
-RisqueDebordement       -0.031605   0.050891  -0.621
-exposition2Semi ombrage -0.006442   0.222487  -0.029
-TypeCultureMaraichage   -0.159045   0.159820  -0.995
-TypeCultureVigne        -0.659351   0.122112  -5.400
-
 Response: weeds_100
                     Chisq Df Pr(>Chisq)    
-annee              4.6697  5    0.45750    
-JulianDay          4.9658  1    0.02585 *  
-RisqueDebordement  0.3857  1    0.53458    
-exposition2        0.0008  1    0.97690    
-TypeCulture       32.1151  2  1.062e-07 ***
+annee              2.2687  1    0.13201    
+JulianDay          4.4674  1    0.03455 *  
+RisqueDebordement  0.4434  1    0.50546    
+exposition2        0.0003  1    0.98718    
+TypeCulture       32.2027  2  1.017e-07 ***
+
+Fixed effects:
+                         Estimate Std. Error t value
+(Intercept)             43.701977  28.923629   1.511
+annee                   -0.021616   0.014351  -1.506
+JulianDay                0.074817   0.035398   2.114
+RisqueDebordement       -0.033788   0.050740  -0.666
+exposition2Semi ombrage -0.003567   0.221952  -0.016
+TypeCultureMaraichage   -0.157675   0.159431  -0.989
+TypeCultureVigne        -0.658406   0.121821  -5.405
 
            R2m       R2c
-[1,] 0.1282667 0.4773558
+[1,] 0.1264915 0.4754394
+
 
 ### G.II.2. Type de production 
 
@@ -2493,32 +2447,28 @@ summary(mod_pays_best)
 Anova(mod_pays_best)
 r.squaredGLMM(mod_pays_best)
 ```
-Fixed effects:
-                         Estimate Std. Error t value
-(Intercept)              0.173123   0.110173   1.571
-annee2014                0.008549   0.082539   0.104
-annee2015                0.023341   0.089157   0.262
-annee2016               -0.124871   0.083390  -1.497
-annee2017               -0.081456   0.084804  -0.961
-annee2018               -0.066251   0.084277  -0.786
-JulianDay                0.097969   0.035775   2.738
-RisqueDebordement       -0.051195   0.050123  -1.021
-exposition2Semi ombrage -0.106324   0.219569  -0.484
-TypeCultureMaraichage   -0.141172   0.156013  -0.905
-TypeCultureVigne        -0.723394   0.121004  -5.978
-p_bio                    0.136332   0.044796   3.043
-
 Response: weeds_100
                     Chisq Df Pr(>Chisq)    
-annee              4.7407  5   0.448338    
-JulianDay          7.4991  1   0.006173 ** 
-RisqueDebordement  1.0432  1   0.307072    
-exposition2        0.2345  1   0.628215    
-TypeCulture       39.8159  2   2.26e-09 ***
-p_bio              9.2621  1   0.002339 ** 
+annee              2.2017  1   0.137860    
+JulianDay          6.8766  1   0.008733 ** 
+RisqueDebordement  1.1356  1   0.286579    
+exposition2        0.2188  1   0.639959    
+TypeCulture       39.8405  2  2.232e-09 ***
+p_bio              9.1346  1   0.002508 ** 
+
+Fixed effects:
+                        Estimate Std. Error t value
+(Intercept)             42.99496   28.88831   1.488
+annee                   -0.02127    0.01433  -1.484
+JulianDay                0.09326    0.03556   2.622
+RisqueDebordement       -0.05327    0.04999  -1.066
+exposition2Semi ombrage -0.10248    0.21908  -0.468
+TypeCultureMaraichage   -0.13986    0.15567  -0.898
+TypeCultureVigne        -0.72175    0.12073  -5.978
+p_bio                    0.13507    0.04469   3.022
 
            R2m       R2c
-[1,] 0.1511955 0.4786726
+[1,] 0.1493685 0.4767985
 
 #### G.II.3.2. Pratiques de gestion de la bordure
 ```{r}
@@ -2529,34 +2479,30 @@ summary(mod_bord_best)
 Anova(mod_bord_best)
 r.squaredGLMM(mod_bord_best)
 ```
-Fixed effects:
-                                      Estimate Std. Error t value
-(Intercept)                            0.14866    0.10964   1.356
-annee2014                              0.01086    0.08248   0.132
-annee2015                              0.02634    0.08909   0.296
-annee2016                             -0.12283    0.08333  -1.474
-annee2017                             -0.07733    0.08475  -0.912
-annee2018                             -0.06047    0.08425  -0.718
-JulianDay                              0.10581    0.03573   2.962
-RisqueDebordement                     -0.03856    0.04988  -0.773
-exposition2Semi ombrage               -0.11610    0.21699  -0.535
-TypeCultureMaraichage                 -0.10198    0.15505  -0.658
-TypeCultureVigne                      -0.65789    0.12287  -5.354
-p_bio                                  0.11764    0.04499   2.615
-Bordure_BroyageFauchage_SansRamassage -0.10827    0.04696  -2.305
-
 Response: weeds_100
                                         Chisq Df Pr(>Chisq)    
-annee                                  4.6466  5   0.460517    
-JulianDay                              8.7719  1   0.003059 ** 
-RisqueDebordement                      0.5977  1   0.439469    
-exposition2                            0.2863  1   0.592602    
-TypeCulture                           32.8840  2  7.233e-08 ***
-p_bio                                  6.8373  1   0.008927 ** 
-Bordure_BroyageFauchage_SansRamassage  5.3151  1   0.021141 * 
+annee                                  2.0117  1   0.156095    
+JulianDay                              8.0867  1   0.004459 ** 
+RisqueDebordement                      0.6719  1   0.412391    
+exposition2                            0.2681  1   0.604614    
+TypeCulture                           32.9429  2  7.023e-08 ***
+p_bio                                  6.7420  1   0.009417 ** 
+Bordure_BroyageFauchage_SansRamassage  5.2291  1   0.022211 * 
 
-           R2m       R2c
-[1,] 0.1659127 0.4818772
+Fixed effects:
+                                      Estimate Std. Error t value
+(Intercept)                           41.06470   28.87650   1.422
+annee                                 -0.02032    0.01433  -1.418
+JulianDay                              0.10100    0.03552   2.844
+RisqueDebordement                     -0.04078    0.04975  -0.820
+exposition2Semi ombrage               -0.11212    0.21653  -0.518
+TypeCultureMaraichage                 -0.10106    0.15473  -0.653
+TypeCultureVigne                      -0.65690    0.12261  -5.357
+p_bio                                  0.11656    0.04489   2.597
+Bordure_BroyageFauchage_SansRamassage -0.10717    0.04687  -2.287
+
+           R2m      R2c
+[1,] 0.1640192 0.480014
 
 
 #### G.II.3.3. Pratiques intra-parcellaires
@@ -2569,40 +2515,36 @@ summary(mod_prat_best)
 Anova(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
 ```
-Fixed effects:
-                                       Estimate Std. Error t value
-(Intercept)                            0.131974   0.108945   1.211
-annee2014                              0.009000   0.082518   0.109
-annee2015                              0.026276   0.089120   0.295
-annee2016                             -0.122422   0.083357  -1.469
-annee2017                             -0.081466   0.084795  -0.961
-annee2018                             -0.064164   0.084284  -0.761
-JulianDay                              0.094796   0.035845   2.645
-RisqueDebordement                     -0.043243   0.049361  -0.876
-exposition2Semi ombrage               -0.057485   0.216349  -0.266
-TypeCultureMaraichage                  0.002911   0.162057   0.018
-TypeCultureVigne                      -0.537503   0.135830  -3.957
-p_bio                                  0.121502   0.044503   2.730
-Bordure_BroyageFauchage_SansRamassage -0.094090   0.046925  -2.005
-IFT_Herbicide2013_2019                 0.166868   0.084584   1.973
-
 Response: weeds_100
                                         Chisq Df Pr(>Chisq)    
-annee                                  4.7017  5   0.453352    
-JulianDay                              6.9940  1   0.008178 ** 
-RisqueDebordement                      0.7674  1   0.381008    
-exposition2                            0.0706  1   0.790466    
-TypeCulture                           22.1303  2  1.565e-05 ***
-p_bio                                  7.4538  1   0.006330 ** 
-Bordure_BroyageFauchage_SansRamassage  4.0205  1   0.044951 *  
-IFT_Herbicide2013_2019                 3.8920  1   0.048516 *  
+annee                                  2.1488  1   0.142683    
+JulianDay                              6.3963  1   0.011436 *  
+RisqueDebordement                      0.8506  1   0.356370    
+exposition2                            0.0603  1   0.806085    
+TypeCulture                           22.1302  2  1.565e-05 ***
+p_bio                                  7.3619  1   0.006662 ** 
+Bordure_BroyageFauchage_SansRamassage  3.9371  1   0.047233 *  
+IFT_Herbicide2013_2019                 3.9751  1   0.046179 *  
+
+Fixed effects:
+                                       Estimate Std. Error t value
+(Intercept)                           42.436336  28.887976   1.469
+annee                                 -0.021011   0.014333  -1.466
+JulianDay                              0.090106   0.035628   2.529
+RisqueDebordement                     -0.045405   0.049230  -0.922
+exposition2Semi ombrage               -0.052996   0.215888  -0.245
+TypeCultureMaraichage                  0.004726   0.161714   0.029
+TypeCultureVigne                      -0.535527   0.135534  -3.951
+p_bio                                  0.120478   0.044403   2.713
+Bordure_BroyageFauchage_SansRamassage -0.092907   0.046823  -1.984
+IFT_Herbicide2013_2019                 0.168247   0.084387   1.994
 
            R2m       R2c
-[1,] 0.1776527 0.4827248
+[1,] 0.1760226 0.4810236
 
 #### G.II.3.4. Test spatial autocorrelation
 ```{r}
-mor=moran.test(resid(mod_bord_best), col.w.d_weeds_clust2, zero.policy=T)
+mor=moran.test(resid(mod_prat_best), col.w.d_weeds_clust2, zero.policy=T)
 mor
 ```
 not spacially autocorrelated
@@ -2623,30 +2565,28 @@ summary(m0_best)
 Anova(m0_best)
 r.squaredGLMM(m0_best)
 ```
-Fixed effects:
-                         Estimate Std. Error t value
-(Intercept)              0.324541   0.069484   4.671
-annee2014               -0.083888   0.074830  -1.121
-annee2015               -0.002842   0.076557  -0.037
-annee2016               -0.070123   0.075195  -0.933
-annee2017                0.031675   0.075346   0.420
-annee2018               -0.006132   0.075739  -0.081
-JulianDay                0.100013   0.037944   2.636
-RisqueDebordement        0.030151   0.044307   0.681
-exposition2Semi ombrage  0.093025   0.158532   0.587
-TypeCultureMaraichage   -0.667864   0.219304  -3.045
-TypeCultureVigne        -1.119345   0.185696  -6.028
-
 Response: weeds_100
                     Chisq Df Pr(>Chisq)    
-annee              3.5611  5   0.614165    
-JulianDay          6.9473  1   0.008395 ** 
-RisqueDebordement  0.4631  1   0.496179    
-exposition2        0.3443  1   0.557346    
-TypeCulture       43.5499  2  3.494e-10 ***
+annee              0.2980  1    0.58515    
+JulianDay          6.4861  1    0.01087 *  
+RisqueDebordement  0.4737  1    0.49131    
+exposition2        0.3655  1    0.54546    
+TypeCulture       43.6805  2  3.273e-10 ***
 
-            R2m       R2c
-[1,] 0.09259676 0.4351538
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)             -13.817184  25.867907  -0.534
+annee                     0.007006   0.012835   0.546
+JulianDay                 0.096167   0.037760   2.547
+RisqueDebordement         0.030498   0.044313   0.688
+exposition2Semi ombrage   0.095883   0.158595   0.605
+TypeCultureMaraichage    -0.667458   0.219415  -3.042
+TypeCultureVigne         -1.122278   0.185789  -6.041
+
+
+            R2m      R2c
+[1,] 0.09109091 0.434817
+
 
 ### G.III.2. Type de production
 
@@ -2660,38 +2600,34 @@ ns
 #### G.III.3.1. Pesticides échelle paysages
 ```{r}
 mod_pays <- lmer(weeds_100 ~ annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture + IFT_H+ IFT_T+p_bio+ (1| code_parcelle)  , data=predictors_clust3, REML=F, na.action="na.fail")
-dredge(mod_bord)
+dredge(mod_pays)
 mod_pays_best <- lmer(weeds_100~annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture + IFT_H + (1| code_parcelle)  , data=predictors_clust3, REML=T, na.action="na.fail")
 summary(mod_pays_best)
 Anova(mod_pays_best)
 r.squaredGLMM(mod_pays_best)
 ```
-Fixed effects:
-                         Estimate Std. Error t value
-(Intercept)              0.238650   0.076939   3.102
-annee2014               -0.082561   0.074843  -1.103
-annee2015               -0.003396   0.076565  -0.044
-annee2016               -0.069259   0.075204  -0.921
-annee2017                0.030630   0.075354   0.406
-annee2018               -0.009495   0.075752  -0.125
-JulianDay                0.091839   0.037988   2.418
-RisqueDebordement        0.026228   0.043868   0.598
-exposition2Semi ombrage  0.123965   0.157055   0.789
-TypeCultureMaraichage   -0.644056   0.216846  -2.970
-TypeCultureVigne        -0.966497   0.193150  -5.004
-IFT_H                    0.142823   0.056643   2.521
-
 Response: weeds_100
                     Chisq Df Pr(>Chisq)    
-annee              3.3950  5    0.63934    
-JulianDay          5.8445  1    0.01563 *  
-RisqueDebordement  0.3575  1    0.54992    
-exposition2        0.6230  1    0.42993    
-TypeCulture       31.9223  2   1.17e-07 ***
-IFT_H              6.3578  1    0.01169 * 
+annee              0.2458  1    0.62004    
+JulianDay          5.4367  1    0.01972 *  
+RisqueDebordement  0.3656  1    0.54543    
+exposition2        0.6535  1    0.41888    
+TypeCulture       31.9594  2  1.148e-07 ***
+IFT_H              6.4727  1    0.01095 *  
 
-           R2m       R2c
-[1,] 0.1060318 0.4364295
+Fixed effects:
+                          Estimate Std. Error t value
+(Intercept)             -12.611325  25.871808  -0.487
+annee                     0.006364   0.012837   0.496
+JulianDay                 0.088133   0.037798   2.332
+RisqueDebordement         0.026522   0.043866   0.605
+exposition2Semi ombrage   0.126977   0.157079   0.808
+TypeCultureMaraichage    -0.643429   0.216908  -2.966
+TypeCultureVigne         -0.967948   0.193211  -5.010
+IFT_H                     0.144130   0.056652   2.544
+
+         R2m       R2c
+[1,] 0.10468 0.4360447
 
 
 #### G.III.3.2. Pratiques de gestion de la bordure
@@ -2703,34 +2639,30 @@ summary(mod_bord_best)
 Anova(mod_bord_best)
 r.squaredGLMM(mod_bord_best)
 ```
-Fixed effects:
-                                       Estimate Std. Error t value
-(Intercept)                            0.225526   0.077043   2.927
-annee2014                             -0.081994   0.074846  -1.095
-annee2015                             -0.003085   0.076565  -0.040
-annee2016                             -0.069694   0.075206  -0.927
-annee2017                              0.030363   0.075355   0.403
-annee2018                             -0.010852   0.075755  -0.143
-JulianDay                              0.094530   0.037959   2.490
-RisqueDebordement                      0.029037   0.043711   0.664
-exposition2Semi ombrage                0.073183   0.158843   0.461
-TypeCultureMaraichage                 -0.582939   0.218431  -2.669
-TypeCultureVigne                      -0.900176   0.195709  -4.600
-IFT_H                                  0.157110   0.056912   2.761
-Bordure_BroyageFauchage_SansRamassage -0.091994   0.051425  -1.789
-
 Response: weeds_100
                                         Chisq Df Pr(>Chisq)    
-annee                                  3.3680  5    0.64345    
-JulianDay                              6.2016  1    0.01276 *  
-RisqueDebordement                      0.4413  1    0.50651    
-exposition2                            0.2123  1    0.64500    
-TypeCulture                           26.1252  2  2.123e-06 ***
-IFT_H                                  7.6208  1    0.00577 ** 
-Bordure_BroyageFauchage_SansRamassage  3.2002  1    0.07363 . 
+annee                                  0.2243  1   0.635747    
+JulianDay                              5.7858  1   0.016156 *  
+RisqueDebordement                      0.4503  1   0.502187    
+exposition2                            0.2296  1   0.631814    
+TypeCulture                           26.1551  2  2.092e-06 ***
+IFT_H                                  7.7459  1   0.005383 ** 
+Bordure_BroyageFauchage_SansRamassage  3.2047  1   0.073428 . 
 
-           R2m      R2c
-[1,] 0.1122848 0.437524
+Fixed effects:
+                                       Estimate Std. Error t value
+(Intercept)                           -12.05225   25.87276  -0.466
+annee                                   0.00608    0.01284   0.474
+JulianDay                               0.09085    0.03777   2.405
+RisqueDebordement                       0.02933    0.04371   0.671
+exposition2Semi ombrage                 0.07613    0.15887   0.479
+TypeCultureMaraichage                  -0.58224    0.21850  -2.665
+TypeCultureVigne                       -0.90156    0.19578  -4.605
+IFT_H                                   0.15842    0.05692   2.783
+Bordure_BroyageFauchage_SansRamassage  -0.09209    0.05144  -1.790
+
+           R2m       R2c
+[1,] 0.1109769 0.4371752
 
 
 #### G.III.3.3. Pratiques intra-parcellaires
