@@ -37,7 +37,7 @@ dataset_500_ENI_Lea <- read.csv(file="5. Models_par_clusters_pedoclimatiques/5.2
          clust=as_factor(clust)) %>% 
   left_join(pca_axes)
 
-summary(dataset_500_ENI_Lea$TypeCulture)
+summary(dataset_500_ENI_Lea$perennial_100)
 ```
 
 GrandesCultures Maraichage Vigne 1643 228 539
@@ -261,7 +261,7 @@ mod_prat <- lmer(entomogame_1 ~  annee + JulianDay^2 + RisqueDebordement + expos
 vif(mod_prat)
 dredge(mod_prat)
 
-mod_prat_best <- lmer(entomogame_1 ~annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture + Dim.1 + Dim.2 + Dim.3 + p_bio + Bordure_Largeur +CoefN + (1| code_parcelle)  , data=dataset_500_ENI_Lea, REML=T, na.action="na.fail")
+mod_prat_best <- lmer(entomogame_1 ~annee + JulianDay^2 + RisqueDebordement + exposition2 + TypeCulture + Dim.1 + Dim.2 + Dim.3  + Bordure_Largeur +CoefN + (1| code_parcelle)  , data=dataset_500_ENI_Lea, REML=T, na.action="na.fail")
 summary(mod_prat_best)
 Anova(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
@@ -1062,7 +1062,7 @@ RisqueDebordement                       1.21702    0.96530   1.261
 exposition2Semi ombrage                -0.17282    1.87521  -0.092
 TypeCultureMaraichage                  -6.05453    1.99328  -3.037 ***
 TypeCultureVigne                      -14.37520    2.19664  -6.544 ***
-Dim.1                                   1.36094    0.40632   3.349
+Dim.1                                   1.36094    0.40632   3.349 ***
 Dim.2                                   0.76675    0.47979   1.598
 Dim.3                                  -0.16208    0.42595  -0.381
 IFT_T                                   0.48974    0.26963   1.816 .
