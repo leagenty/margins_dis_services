@@ -1,0 +1,475 @@
+---
+title: "6.glmm_plant_coleo_traits"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+à faire après : Moran sur les résidus
+
+# 1. Open data
+
+Sources sur les gam : https://r.qcbs.ca/workshop08/book-en/gam-model-checking.html https://reseau-mexico.fr/sites/reseau-mexico.fr/files/igam.pdf https://cran.r-project.org/web/packages/mgcv/mgcv.pdf
+
+```{r}
+library(tidyverse)
+library(mgcv)
+library(car)
+library(MuMIn)
+select <- dplyr::select
+
+
+datatot <- read.csv(file="6.gam_plant_coleo_traits/input/plant_coleo_agri_pedoclim_data.csv")  %>% 
+  select(-X) %>% 
+  filter(ab_coleo>5) #because it does not make sense to make stats on such small communities
+
+
+any(is.na(datatot))
+colSums(is.na(datatot))
+list_id_parcelle_manquants_plants <- datatot %>%  
+  select(id_parcelle,FEve_plants) %>% 
+  filter(is.na(FEve_plants))
+
+datatot_final <- datatot %>% 
+  filter(!id_parcelle%in%list_id_parcelle_manquants_plants$id_parcelle)  #remove plots for which we do not have bota sample
+
+any(is.na(datatot_final))
+colSums(is.na(datatot_final)) 
+```
+
+# 2. Run gam on coleo diversity - species level data
+
+## 2.1. Coleo abundance
+
+### 2.1.1. Checking outliers & distribution
+
+```{r}
+summary(datatot_final$ab_coleo)
+sd(datatot_final$ab_coleo)
+ggplot(datatot_final, aes(x = ab_coleo)) +
+  geom_histogram(binwidth = 15, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable ab_coleo",
+       x = "ab_coleo",
+       y = "Fréquence") +
+  theme_minimal()
+
+
+# log +1 transfo
+ggplot(datatot_final, aes(x = log(ab_coleo+1))) +
+  geom_histogram(binwidth = 0.5, fill = "pink4", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable ab_coleo",
+       x = "ab_coleo",
+       y = "Fréquence") +
+  theme_minimal()
+```
+
+### 2.1.2. Modèle
+
+```{r}
+mod_ab_tot <- gam(log(ab_coleo+1) ~ s(ab_pl,k=3)+s(rich_sp_pl,k=3)+s(FRic_plants,k=3)+s(forbs_pourc_ab,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=3)+s(EIV_N_CWM,k=3),select=T,data=datatot_final,na.action="na.fail")
+vif(mod_ab_tot)
+summary(mod_ab_tot) 
+
+mod_ab <- gam(log(ab_coleo+1) ~ s(ab_pl,k=3)+s(forbs_pourc_ab,k=3),select=T,data=datatot_final,na.action="na.fail")
+summary(mod_ab)
+
+k.check(mod_ab)
+par(mfrow = c(2, 2))
+gam.check(mod_ab)
+
+
+plot(mod_ab,pages=1,residuals=TRUE) 
+plot(mod_ab,pages=1,seWithMean=TRUE)
+
+par(mfrow = c(1, 1))
+plot(mod_ab,select=1,residuals=TRUE)
+plot(mod_ab,select=2,residuals=TRUE)
+```
+
+## 2.2. Coleo richness
+
+### 2.2.1. Checking outliers & distribution
+
+```{r}
+summary(datatot_final$rich_sp_coleo)
+sd(datatot_final$rich_sp_coleo)
+ggplot(datatot_final, aes(x = rich_sp_coleo)) +
+  geom_histogram(binwidth = 4, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable rich_sp_coleo",
+       x = "ab_coleo",
+       y = "Fréquence") +
+  theme_minimal()
+
+ggplot(datatot_final, aes(x = log(rich_sp_coleo+1))) +
+  geom_histogram(binwidth = 0.2, fill = "pink4", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable log(rich_sp_coleo+1)",
+       x = "ab_coleo",
+       y = "Fréquence") +
+  theme_minimal()
+
+
+```
+
+
+### 2.2.2. Modèle
+
+```{r}
+mod_rich_tot <- gam(rich_sp_coleo ~ s(ab_pl,k=3)+s(rich_sp_pl,k=3)+s(FRic_plants,k=3)+s(forbs_pourc_ab,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=3)+s(EIV_N_CWM,k=3),select=T,data=datatot_final,na.action="na.fail")
+vif(mod_rich_tot)
+summary(mod_rich_tot)
+
+mod_rich <- gam(rich_sp_coleo ~ s(ab_pl,k=3)+s(FRic_plants,k=3)+s(forbs_pourc_ab,k=3)+s(annual_pourc_ab,k=3)+s(flow_dur_CWM,k=3),select=T,data=datatot_final,na.action="na.fail")
+
+summary(mod_rich)
+k.check(mod_rich)
+par(mfrow = c(2, 2))
+gam.check(mod_rich)
+
+
+par(mfrow = c(1, 1))
+plot(mod_rich,pages=1,residuals=TRUE) 
+plot(mod_rich,pages=1,seWithMean=TRUE)
+
+plot(mod_rich,select=1,residuals=TRUE)
+plot(mod_rich,select=2,residuals=TRUE)
+plot(mod_rich,select=3,residuals=TRUE)
+plot(mod_rich,select=4,residuals=TRUE)
+plot(mod_rich,select=5,residuals=TRUE)
+```
+
+## 2.3. Coleo predators
+
+### 2.3.1. Checking outliers & distribution
+
+```{r}
+summary(datatot_final$predator_at_one_stage)
+sd(datatot_final$predator_at_one_stage)
+ggplot(datatot_final, aes(x = predator_at_one_stage)) +
+  geom_histogram(binwidth = 4, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable predator_at_one_stage",
+       x = "ab_coleo",
+       y = "Fréquence") +
+  theme_minimal()
+
+ggplot(datatot_final, aes(x = log(predator_at_one_stage+1))) +
+  geom_histogram(binwidth = 0.5, fill = "pink4", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable predator_at_one_stage",
+       x = "predator_at_one_stage",
+       y = "Fréquence") +
+  theme_minimal()
+```
+
+### 2.3.2. Modèle
+
+```{r}
+datatot_final_pred <- datatot_final %>% 
+   filter(!is.na(ab_coleo_phytophagous)) %>% 
+  filter(log(predator_at_one_stage+1) > 1)
+
+mod_preda_tot <- gam(log(predator_at_one_stage+1) ~ s(ab_pl,k=3)+s(rich_sp_pl,k=3)+s(ab_coleo_phytophagous,k=3)+s(forbs_pourc_ab,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=3),select=T,data=datatot_final_pred,na.action="na.fail")
+vif(mod_preda_tot)
+summary(mod_preda_tot) 
+
+
+mod_preda <- gam(log(predator_at_one_stage+1) ~ s(ab_pl,k=3)+s(rich_sp_pl,k=3)+s(ab_coleo_phytophagous,k=3)+s(forbs_pourc_ab,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3),data=datatot_final_pred)
+summary(mod_preda)
+
+k.check(mod_preda)
+par(mfrow = c(2, 2))
+gam.check(mod_preda)
+
+
+par(mfrow = c(1, 1))
+plot(mod_preda,pages=1,residuals=TRUE) 
+plot(mod_preda,pages=1,seWithMean=TRUE)
+
+plot(mod_preda,select=1,residuals=TRUE)
+plot(mod_preda,select=2,residuals=TRUE)
+plot(mod_preda,select=3,residuals=TRUE)
+plot(mod_preda,select=4,residuals=TRUE)
+plot(mod_preda,select=5,residuals=TRUE)
+plot(mod_preda,select=6,residuals=TRUE)
+plot(mod_preda,select=7,residuals=TRUE)
+plot(mod_preda,select=8,residuals=TRUE)
+```
+
+## 2.4. Coleo flower-visitors
+
+### 2.4.1. Nb species of flower visitors
+
+#### 2.4.1.1. Checking outliers & distribution
+
+```{r}
+summary(datatot_final$nb_sp_coleo_flovis)
+sd(datatot_final$nb_sp_coleo_flovis)
+
+ggplot(datatot_final, aes(x = nb_sp_coleo_flovis)) +
+  geom_histogram(binwidth = 3, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable nb_sp_coleo_flovis",
+       x = "nb_sp_coleo_flovis",
+       y = "Fréquence") +
+  theme_minimal()
+
+ggplot(datatot_final, aes(x = log(nb_sp_coleo_flovis+1))) +
+  geom_histogram(binwidth = 0.5, fill = "pink4", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable nb_sp_coleo_flovis",
+       x = "nb_sp_coleo_flovis",
+       y = "Fréquence") +
+  theme_minimal()
+
+
+```
+
+#### 2.4.1.2. Modèle
+
+```{r}
+datatot_flovis <- datatot_final %>% 
+   filter(!is.na(nb_sp_coleo_flovis))
+  
+mod_flovis_tot <- gam(log(nb_sp_coleo_flovis+1) ~ s(ab_entomogame,k=3)+s(FRic_flo,k=3)+s(entomogamous_pourc_ab ,k=3)+s(nb_sp_entomogamous ,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=4),select=T,data=datatot_flovis,na.action="na.fail")
+vif(mod_flovis_tot)
+summary(mod_flovis_tot) 
+
+mod_flovis <- gam(log(nb_sp_coleo_flovis+1) ~s(ab_entomogame,k=3)+s(entomogamous_pourc_ab,k=3)+s(height_mean_CWM,k=4),data=datatot_flovis)
+summary(mod_flovis)
+
+k.check(mod_flovis)
+par(mfrow = c(2, 2))
+gam.check(mod_flovis)
+
+
+par(mfrow = c(1, 1))
+plot(mod_flovis,pages=1,residuals=TRUE) 
+plot(mod_flovis,pages=1,seWithMean=TRUE)
+
+plot(mod_flovis,select=1,residuals=TRUE)
+plot(mod_flovis,select=2,residuals=TRUE)
+plot(mod_flovis,select=3,residuals=TRUE)
+```
+
+### 2.4.2. Abundance of flower visitors
+
+#### 2.4.2.1. Checking outliers & distribution
+
+```{r}
+summary(datatot_flovis$ab_coleo_flovis)
+sd(datatot_flovis$ab_coleo_flovis)
+
+ggplot(datatot_flovis, aes(x = ab_coleo_flovis)) +
+  geom_histogram(binwidth = 10, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable ab_coleo_flovis",
+       x = "ab_coleo_flovis",
+       y = "Fréquence") +
+  theme_minimal()
+
+ggplot(datatot_flovis, aes(x = log(ab_coleo_flovis+1))) +
+  geom_histogram(binwidth = 0.5, fill = "pink4", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable ab_coleo_flovis",
+       x = "log(ab_coleo_flovis)",
+       y = "Fréquence") +
+  theme_minimal()
+```
+
+#### 2.4.2.2. Modèle
+
+```{r}
+mod_flovis_tot <- gam(log(ab_coleo_flovis+1) ~s(ab_entomogame,k=3)+s(FRic_flo,k=3)+s(entomogamous_pourc_ab ,k=3)+s(nb_sp_entomogamous ,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=4),select=T,data=datatot_flovis,na.action="na.fail")
+vif(mod_flovis_tot)
+summary(mod_flovis_tot) 
+
+mod_flovis <- gam(log(ab_coleo_flovis+1) ~s(ab_entomogame,k=3)+s(entomogamous_pourc_ab ,k=3)+s(annual_pourc_ab,k=3),data=datatot_final)
+summary(mod_flovis)
+
+k.check(mod_flovis)
+par(mfrow = c(2, 2))
+gam.check(mod_flovis)
+
+
+par(mfrow = c(1, 1))
+plot(mod_flovis,pages=1,residuals=TRUE) 
+plot(mod_flovis,pages=1,seWithMean=TRUE)
+
+plot(mod_flovis,select=1,residuals=TRUE)
+plot(mod_flovis,select=2,residuals=TRUE)
+plot(mod_flovis,select=3,residuals=TRUE)
+```
+
+## 2.5. Coleo pests
+
+### 2.5.1. Checking outliers & distribution
+
+```{r}
+summary(datatot_final$pest_pourc_ab)
+sd(datatot_final$pest_pourc_ab)
+ggplot(datatot_final, aes(x = pest_pourc_ab)) +
+  geom_histogram(binwidth = 10, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable pest_pourc_ab",
+       x = "ab_coleo",
+       y = "Fréquence") +
+  theme_minimal()
+
+```
+
+we keep it as it is
+
+### 2.5.2. Modèle
+
+```{r}
+mod_pest_tot <- gam(sqrt(pest_pourc_ab) ~ s(ab_pl,k=3)+s(rich_sp_pl,k=3)+s(forbs_pourc_ab,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=3),select=T,data=datatot_final,na.action="na.fail")
+vif(mod_pest_tot)
+summary(mod_pest_tot) 
+
+mod_pest <- gam(sqrt(pest_pourc_ab) ~s(forbs_pourc_ab,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=3),select=T,data=datatot_final)
+summary(mod_pest)
+
+k.check(mod_pest)
+par(mfrow = c(2, 2))
+gam.check(mod_pest)
+
+
+par(mfrow = c(1, 1))
+plot(mod_pest,pages=1,residuals=TRUE) 
+plot(mod_pest,pages=1,seWithMean=TRUE)
+
+plot(mod_pest,select=1,residuals=TRUE)
+plot(mod_pest,select=2,residuals=TRUE)
+```
+
+## 2.6. CWM taille coleo
+
+### 2.6.1 CWM
+
+#### 2.6.1. Checking outliers & distribution
+
+```{r}
+summary(datatot_final$CWM_size_mm_coleo)
+sd(datatot_final$CWM_size_mm_coleo)
+ggplot(datatot_final, aes(x = CWM_size_mm_coleo)) +
+  geom_histogram(binwidth = 1, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable CWM_size_mm_coleo",
+       x = "ab_coleo",
+       y = "Fréquence") +
+  theme_minimal()
+```
+
+we keep it as it
+
+#### 2.6.2. Modèle
+
+```{r}
+mod_size_cwm_tot <- gam(CWM_size_mm_coleo ~ s(ab_pl,k=3)+s(rich_sp_pl,k=3)+s(FRic_plants,k=3)+s(forbs_pourc_ab,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=3),select=T,data=datatot_final,na.action="na.fail")
+summary(mod_size_cwm_tot) 
+
+mod_size_cwm <- gam(CWM_size_mm_coleo ~ s(ab_pl,k=3)+s(rich_sp_pl,k=3)+s(FRic_plants,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=3),data=datatot_final)
+summary(mod_size_cwm)
+
+k.check(mod_size_cwm)
+par(mfrow = c(2, 2))
+gam.check(mod_size_cwm)
+
+
+par(mfrow = c(1, 1))
+plot(mod_size_cwm,pages=1,residuals=TRUE) 
+plot(mod_size_cwm,pages=1,seWithMean=TRUE)
+
+plot(mod_size_cwm,select=1,residuals=TRUE)
+plot(mod_size_cwm,select=2,residuals=TRUE)
+plot(mod_size_cwm,select=3,residuals=TRUE)
+plot(mod_size_cwm,select=4,residuals=TRUE)
+plot(mod_size_cwm,select=5,residuals=TRUE)
+plot(mod_size_cwm,select=6,residuals=TRUE)
+```
+
+## 2.7. CWV taille coléo
+
+### 2.7.1. Checking outliers & distribution
+
+```{r}
+summary(datatot_final$CWV_size_mm_coleo)
+sd(datatot_final$CWV_size_mm_coleo)
+
+ggplot(datatot_final, aes(x = CWV_size_mm_coleo)) +
+  geom_histogram(binwidth = 20, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable CWV_size_mm_coleo",
+       x = "ab_coleo",
+       y = "Fréquence") +
+  theme_minimal()
+
+ggplot(datatot_final, aes(x = log(CWV_size_mm_coleo+1))) +
+  geom_histogram(binwidth = 1, fill = "pink4", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable CWV_size_mm_coleo",
+       x = "ab_coleo",
+       y = "Fréquence") +
+  theme_minimal()
+```
+
+### 2.7.2. Modèle
+
+```{r}
+mod_size_CWV_tot <- gam( log(CWV_size_mm_coleo+1) ~ s(ab_pl,k=3)+s(rich_sp_pl,k=3)+s(FRic_plants,k=3)+s(forbs_pourc_ab,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=3),select=T,data=datatot_final,na.action="na.fail")
+vif(mod_size_CWV_tot)
+summary(mod_size_CWV_tot) 
+
+mod_size_CWV <- gam(log(CWV_size_mm_coleo+1) ~s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3),data=datatot_final)
+summary(mod_size_CWV)
+
+k.check(mod_size_CWV)
+par(mfrow = c(2, 2))
+gam.check(mod_size_CWV)
+
+
+par(mfrow = c(1, 1))
+plot(mod_size_CWV,pages=1,residuals=TRUE) 
+plot(mod_size_CWV,pages=1,seWithMean=TRUE)
+
+plot(mod_size_CWV,select=1,residuals=TRUE)
+plot(mod_size_CWV,select=2,residuals=TRUE)
+plot(mod_size_CWV,select=3,residuals=TRUE)
+plot(mod_size_CWV,select=4,residuals=TRUE)
+```
+
+
+## 2.8. Coleo phytophagous
+
+### 2.8.1. Checking outliers & distribution
+
+```{r}
+summary(datatot_final$phytophagous_at_one_stage)
+sd(datatot_final$phytophagous_at_one_stage)
+
+phytoph_dataset <- datatot_final %>% 
+  filter(phytophagous_at_one_stage>25)
+
+ggplot(datatot_final, aes(x = phytophagous_at_one_stage)) +
+  geom_histogram(binwidth = 10, fill = "blue", color = "black", alpha = 0.7) +
+  labs(title = "Histogramme de la variable phytophagous_at_one_stage",
+       x = "ab_coleo",
+       y = "Fréquence") +
+  theme_minimal()
+```
+
+we keep it as it is
+
+### 2.8.2. Modèle
+
+```{r}
+mod_pest_tot <- gam(phytophagous_at_one_stage ~ s(ab_pl,k=3)+s(rich_sp_pl,k=3)+s(forbs_pourc_ab,k=3)+s(annual_pourc_ab,k=3)+s(height_mean_CWM,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=3)+s(EIV_N_CWM,k=3),select=T,data=datatot_final,na.action="na.fail")
+vif(mod_pest_tot)
+summary(mod_pest_tot) 
+
+mod_pest <- gam(phytophagous_at_one_stage ~ s(ab_pl,k=3)+s(rich_sp_pl,k=3)+s(annual_pourc_ab,k=3)+s(flow_dur_CWM,k=3)+s(height_mean.CWV,k=3),select=T,data=datatot_final)
+summary(mod_pest)
+
+k.check(mod_pest)
+par(mfrow = c(2, 2))
+gam.check(mod_pest)
+
+
+par(mfrow = c(1, 1))
+plot(mod_pest,pages=1,residuals=TRUE) 
+plot(mod_pest,pages=1,seWithMean=TRUE)
+
+plot(mod_pest,select=1,residuals=TRUE)
+plot(mod_pest,select=2,residuals=TRUE)
+```
