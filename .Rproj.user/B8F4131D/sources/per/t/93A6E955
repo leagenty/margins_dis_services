@@ -1,0 +1,28 @@
+{
+    "id": "93A6E955",
+    "path": "C:/Users/l.genty/Desktop/Post doc/margins_dis_services/4. Spatial autocorrelation/Script/2024-03-26_spatial_autocorr.Rmd",
+    "project_path": "4. Spatial autocorrelation/Script/2024-03-26_spatial_autocorr.Rmd",
+    "type": "r_markdown",
+    "hash": "2000079946",
+    "contents": "",
+    "dirty": false,
+    "created": 1740408029639.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "chunk_output_type": "console",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "331,0",
+        "scrollLine": "340",
+        "docOutlineVisible": "1"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1737630944,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1737630944,
+    "read_only": false,
+    "read_only_alternatives": []
+}
