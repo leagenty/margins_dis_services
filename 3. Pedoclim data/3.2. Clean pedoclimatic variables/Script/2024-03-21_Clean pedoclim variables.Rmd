@@ -154,4 +154,6 @@ agroenvi_new <- agroenvi %>%
          temp_range_an = temp_range_an/10)
 
 #write.csv(agroenvi_new, file= "3. Pedoclim data/3.2. Clean pedoclimatic variables/Processed/Agroenvironnement_new.csv")
+
+#write.csv(sol_tot, file= "3. Pedoclim data/3.2. Clean pedoclimatic variables/Processed/sol_variables_500ENI.csv")
 ```

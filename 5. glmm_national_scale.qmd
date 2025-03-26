@@ -542,20 +542,7 @@ Dim.2 2.2456 1 0.1339908\
 Dim.3 0.0165 1 0.8977295\
 IFT_H 8.8499 1 0.0029311** IFT_T 12.2326 1 0.0004696* **p_bio 7.3252 1 0.0067995** Bordure_Largeur 12.0768 1 0.0005105 \* **IFT_Herbicide2013_2019 6.6408 1 0.0099669**
 
-Fixed effects: 
-Estimate Std. Error t value 
-(Intercept) -1.076e+03 2.977e+02 -3.614 annee 5.717e-01 1.475e-01 3.874 ***
-JulianDay 1.442e-02 1.674e-02 0.861 
-RisqueDebordement -4.313e+00 9.996e-01 -4.315*** exposition2Semi ombrage 2.137e+00 1.950e+00 1.096 
-TypeCultureMaraichage -7.431e+00 2.092e+00 -3.552 ***
-TypeCultureVigne 2.349e-01 2.249e+00 0.104 - Dim.1 -7.579e-01 5.093e-01 -1.488 
-Dim.2 -7.720e-01 5.152e-01 -1.499 
-Dim.3 -5.846e-02 4.549e-01 -0.129 
-IFT_H -5.707e+00 1.918e+00 -2.975** 
-IFT_T -1.024e+00 2.928e-01 -3.498* **
-p_bio -1.482e-01 5.475e-02 -2.707** 
-Bordure_Largeur 8.138e-01 2.342e-01 3.475 \* **
-IFT_Herbicide2013_2019 -1.306e+00 5.069e-01 -2.577**
+Fixed effects: Estimate Std. Error t value (Intercept) -1.076e+03 2.977e+02 -3.614 annee 5.717e-01 1.475e-01 3.874 ***JulianDay 1.442e-02 1.674e-02 0.861 RisqueDebordement -4.313e+00 9.996e-01 -4.315*** exposition2Semi ombrage 2.137e+00 1.950e+00 1.096 TypeCultureMaraichage -7.431e+00 2.092e+00 -3.552 ***TypeCultureVigne 2.349e-01 2.249e+00 0.104 - Dim.1 -7.579e-01 5.093e-01 -1.488 Dim.2 -7.720e-01 5.152e-01 -1.499 Dim.3 -5.846e-02 4.549e-01 -0.129 IFT_H -5.707e+00 1.918e+00 -2.975** IFT_T -1.024e+00 2.928e-01 -3.498* **p_bio -1.482e-01 5.475e-02 -2.707** Bordure_Largeur 8.138e-01 2.342e-01 3.475 \* **IFT_Herbicide2013_2019 -1.306e+00 5.069e-01 -2.577**
 
 R2m R2c 0.1318811 0.4951966
 
@@ -578,8 +565,7 @@ TypeCulture 6.1468 2 0.046262*\
 Dim.1 4.7845 1 0.028717 \*\
 Dim.2 9.6918 1 0.001851 \*\* Dim.3 1.3281 1 0.249152
 
-Fixed effects: Estimate Std. Error t value (Intercept) -828.92499 315.98517 -2.623 
-annee 0.43333 0.15661 2.767 JulianDay 0.16547 0.01787 9.257 RisqueDebordement -3.57329 1.13320 -3.153 exposition2Semi ombrage 0.73368 2.22961 0.329 TypeCultureMaraichage -5.65747 2.35057 -2.407 TypeCultureVigne -0.52339 2.01345 -0.260 Dim.1 -1.02594 0.46903 -2.187 Dim.2 -1.74914 0.56185 -3.113 Dim.3 0.57380 0.49791 1.152
+Fixed effects: Estimate Std. Error t value (Intercept) -828.92499 315.98517 -2.623 annee 0.43333 0.15661 2.767 JulianDay 0.16547 0.01787 9.257 RisqueDebordement -3.57329 1.13320 -3.153 exposition2Semi ombrage 0.73368 2.22961 0.329 TypeCultureMaraichage -5.65747 2.35057 -2.407 TypeCultureVigne -0.52339 2.01345 -0.260 Dim.1 -1.02594 0.46903 -2.187 Dim.2 -1.74914 0.56185 -3.113 Dim.3 0.57380 0.49791 1.152
 
 R2m R2c 0.1237027 0.5338822
 
