@@ -31,6 +31,7 @@ library(chisq.posthoc.test)
 ```
 
 # 1. Opening data
+
 ```{r}
 select <- dplyr::select
 
@@ -38,6 +39,7 @@ pedoclim_pays <- read.csv(file="3. Pedoclim data/3.4. Pedoclim_landscape_pcas/Ra
 ```
 
 # 2. Select variables
+
 ```{r}
 var_selected <- pedoclim_pays%>% 
   dplyr::select(id_parcelle,Soil_Sand_content,Soil_Silt_content,Soil_Clay_content,Soil_Nitrogen,Soil_CEC,Soil_organic_carbon_content,Soil_Ph_h2o,Soil_Bulk_density,temp_moy_an,temp_range_an,  precip_an, precip_season, pourc_bio_2019,pourc_prairies,pourc_cultures,pourc_ESN,pourc_routes_batis,pourc_eau,shannon_landscape,shannon_crops , Bordure_Adj_BandeHerbeuse, Bordure_Adj_Zone_humide ,Bordure_Adj_Prairie , Bordure_Adj_Autres,Bordure_Adj_HaieBois,Bordure_Adj_BatiRoute,Bordure_Adj_Culture) 
@@ -54,43 +56,42 @@ biogeo <- pedoclim_pays %>%
 # 3. Create datasets landscape & pedoclim
 
 ## 3.1. Pedoclim
+
 ```{r}
 pedoclim_var <- var_selected %>% 
   select(id_parcelle,Soil_Sand_content,Soil_Silt_content,Soil_Clay_content,Soil_Nitrogen,Soil_CEC,Soil_organic_carbon_content,Soil_Ph_h2o,Soil_Bulk_density,temp_moy_an,temp_range_an,precip_an,precip_season)
 ```
 
 ## 3.2. Landscape
+
 ```{r}
 landscape_var <- var_selected %>% 
   select(id_parcelle, pourc_ESN,pourc_bio_2019,pourc_prairies,pourc_cultures,pourc_routes_batis,pourc_eau,shannon_landscape,shannon_crops , Bordure_Adj_BandeHerbeuse, Bordure_Adj_Zone_humide ,Bordure_Adj_Prairie , Bordure_Adj_Autres,Bordure_Adj_HaieBois,Bordure_Adj_BatiRoute,Bordure_Adj_Culture)
 ```
 
-
 # 4. Pedoclimatic PCA
 
 ## 4.1. Retirer variables autocorrélées au-delà de 0.5
+
 ```{r}
 pedoclim_var2 <- pedoclim_var %>% 
   column_to_rownames("id_parcelle")
 corr <- cor(pedoclim_var2, use="complete.obs") 
 ggcorrplot(corr, method = "square", hc.order = TRUE)
 ```
-soil sand / soil silt : -0.56
-soil sand / soil clay : -0.49
-soil silt / soil clay : -0.11
 
-soil CEC / soil clay : 0.66
-soil CEC / soil nitrogen : 0.7
-soil CEC / soil organic content : 0.64
+soil sand / soil silt : -0.56 soil sand / soil clay : -0.49 soil silt / soil clay : -0.11
+
+soil CEC / soil clay : 0.66 soil CEC / soil nitrogen : 0.7 soil CEC / soil organic content : 0.64
 
 soil nitrogen / soil organic content : 0.84
 
 temp moy an / precipit : 0.7
 
-Je retire soil CEC 
-
+Je retire soil CEC
 
 ## 4.2. Impute missing variables
+
 ```{r}
 pedoclim_var3 <- pedoclim_var %>% 
   column_to_rownames("id_parcelle")
@@ -107,8 +108,8 @@ pedoclim_var_imputed <- as_tibble(res.imp$completeObs) %>%
   left_join(biogeo) 
 ```
 
-
 ## 4.3. Run PCA
+
 ```{r}
 pedoclim_var_acp <- pedoclim_var_imputed %>% 
   dplyr::select(-Soil_CEC)%>% 
@@ -147,6 +148,7 @@ r$Dim.4
 ```
 
 ## 4.4. Save pca axes
+
 ```{r}
 names <- pedoclim_var_imputed %>% 
   dplyr::select(-Soil_CEC)%>% 
@@ -165,23 +167,25 @@ axes_pca_pedoclim <- as_tibble(dim_pca$coord) %>%
 write.csv(axes_pca_pedoclim,file="3. Pedoclim data/3.4. Pedoclim_landscape_pcas/Processed/axes_pca_pedoclim.csv") 
 ```
 
-
 # 5. Landscape PCA
 
 ## 5.1. Retirer variables autocorrélées au-delà de 0.5
+
 ```{r}
 landscape_var2 <- landscape_var %>% 
   column_to_rownames("id_parcelle")
 corr <- cor(landscape_var2, use="complete.obs") 
 ggcorrplot(corr, method = "square", hc.order = TRUE)
 ```
-pourc prairies / pourc cultures : -0.6
+
+pourc prairies / pourc cultures : -0.6 
 shannon_crops / shannon_landscape : 0.9
 
-pourc prairies / pourc ESN : -0.86
+pourc cultures / pourc ESN : -0.86 
 pourc prairies / pourc ESN : 0.75
 
 ## 5.2. Impute missing variables
+
 ```{r}
 landscape_var3 <- landscape_var %>% 
   column_to_rownames("id_parcelle")
@@ -196,10 +200,13 @@ landscape_var_imputed <- as_tibble(res.imp$completeObs) %>%
   cbind(name_var) %>% 
   relocate("id_parcelle") %>% 
   left_join(biogeo) 
+
+write.csv(landscape_var_imputed,file="3. Pedoclim data/3.4. Pedoclim_landscape_pcas/Processed/landscape_var_imputed.csv") 
+
 ```
 
-
 ## 5.3. Run PCA
+
 ```{r}
 landscape_var_acp <- landscape_var_imputed %>% 
   select(-pourc_cultures,-pourc_prairies,-shannon_landscape)%>% 
@@ -235,6 +242,4 @@ r$Dim.3
 r$Dim.4
 ```
 
---> The % of inertia are too weak, I decide to keep the variables : pourc_ESN, shannon_landscape, pourc_eau and pourc_routes_bati
-
-
+--\> The % of inertia are too weak, I decide to keep the variables : pourc_ESN, shannon_landscape, pourc_eau and pourc_routes_bati
