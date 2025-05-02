@@ -1,0 +1,50 @@
+ecosytem service indicator;predictor;estimate;standard error;p value;signif;R2m;R2c
+entomogamous species;Year;-0,005;0,002;0,059;trend;0,22;0,57
+entomogamous species;Crop type : market gardening;-0,012;0,02;NA;NA;0,22;0,57
+entomogamous species;Crop type : vineyard;0,084;0,018;NA;NA;0,22;0,57
+entomogamous species;Pedoclimatic PCA 1st axis;0,012;0,004;0,004;**;0,22;0,57
+entomogamous species;Pedoclimatic PCA 2nd axis;0,015;0,004;0;***;0,22;0,57
+entomogamous species;Pedoclimatic PCA 3rd axis;0,016;0,005;0,001;***;0,22;0,57
+entomogamous species;N fertilization dose;-0,038;0,007;0;***;0,22;0,57
+entomogamous species;Crop type;NA;NA;0;***;0,22;0,57
+FRic flo;Julian day;-0,005;0,001;0;***;0,06;0,47
+FRic flo;Pedoclimatic PCA 2nd axis;-0,002;0,001;0,03;*;0,06;0,47
+FRic flo;% semi-natural habitats in the landscape;0,103;0,034;0,002;**;0,06;0,47
+FRic flo;% wet habitats in the landscape;0,023;0,008;0,003;**;0,06;0,47
+FRic flo;% roads and buildings in the landscape;0,056;0,018;0,002;**;0,06;0,47
+FRic flo;% crops in the landscape in the landscape;0,116;0,038;0,002;**;0,06;0,47
+FRic flo;In field fungicide and insecticide TFI;-0,004;0,001;0,003;**;0,06;0,47
+FRic flo;In field herbicide TFI;-0,003;0,001;0,028;*;0,06;0,47
+FRic flo;Copper use;-0,002;0,001;0,004;**;0,06;0,47
+FDiv flo;Pedoclimatic PCA 2nd axis;-0,005;0,001;0;***;0,01;0,21
+nat val sp;Year;0,963;0,254;0;***;0,13;0,49
+nat val sp;Spillover risk;-2,45;0,535;0;***;0,13;0,49
+nat val sp;Crop type : market gardening;-7,751;2,014;NA;NA;0,13;0,49
+nat val sp;Crop type : vineyard;0,328;2,171;NA;NA;0,13;0,49
+nat val sp;Pedoclimatic PCA 2nd axis;-1,137;0,405;0,005;**;0,13;0,49
+nat val sp;Municipality herbicide TFI;-3,009;0,79;0;***;0,13;0,49
+nat val sp;Municipality total TFI;-2,569;0,727;0;***;0,13;0,49
+nat val sp;% of organic fields in the municipality;-1,865;0,659;0,005;**;0,13;0,49
+nat val sp;Margin width;2,114;0,554;0;***;0,13;0,49
+nat val sp;In field herbicide TFI;-1,648;0,636;0,01;**;0,13;0,49
+nat val sp;Crop type;NA;NA;0;***;0,13;0,49
+perennial sp;Year;0,725;0,27;0,007;**;0,18;0,54
+perennial sp;Julian day;3,77;0,459;0;***;0,18;0,54
+perennial sp;Spillover risk;-1,726;0,585;0,003;**;0,18;0,54
+perennial sp;Crop type : market gardening;-5,343;2,293;NA;NA;0,18;0,54
+perennial sp;Crop type : vineyard;1,642;1,761;NA;NA;0,18;0,54
+perennial sp;Pedoclimatic PCA 1st axis;-2,888;0,484;0;***;0,18;0,54
+perennial sp;Pedoclimatic PCA 2nd axis;-1,284;0,45;0,004;**;0,18;0,54
+perennial sp;Pedoclimatic PCA 3rd axis;-0,981;0,502;0,051;trend;0,18;0,54
+perennial sp;% crops in the landscape;-2,444;0,681;0;***;0,18;0,54
+perennial sp;Margin width;2,252;0,611;0;***;0,18;0,54
+perennial sp;Number of mowings;-0,705;0,35;0,044;*;0,18;0,54
+perennial sp;Crop type;NA;NA;0,014;*;0,18;0,54
+prob weeds sp;Leaving mulch after mowing;-1,827;0,571;0,001;**;0,16;0,49
+prob weeds sp;Margin width;-1,121;0,537;0,037;*;0,16;0,49
+prob weeds sp;Julian day;1,43;0,403;0;***;0,16;0,49
+prob weeds sp;Crop type : market gardening;-3,842;1,951;NA;NA;0,16;0,49
+prob weeds sp;Crop type : vineyard;-10,53;1,639;NA;NA;0,16;0,49
+prob weeds sp;% crops in the landscape;1,762;0,576;0,002;**;0,16;0,49
+prob weeds sp;N fertilization dose;1,457;0,656;0,027;*;0,16;0,49
+prob weeds sp;Crop type;NA;NA;0;***;0,16;0,49

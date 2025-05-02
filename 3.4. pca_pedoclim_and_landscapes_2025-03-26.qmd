@@ -114,7 +114,19 @@ pedoclim_var_imputed <- as_tibble(res.imp$completeObs) %>%
 pedoclim_var_acp <- pedoclim_var_imputed %>% 
   dplyr::select(-Soil_CEC)%>% 
   mutate_if(is.numeric, scale) %>% 
-  column_to_rownames("id_parcelle")
+  column_to_rownames("id_parcelle") %>% 
+  rename(
+    annual_temperature_range = temp_range_an,
+    annual_rainfalls = precip_an,
+    mean_annual_temperature = temp_moy_an,
+    rainfalls_seasonality = precip_season,
+    soil_sand_content = Soil_Sand_content,
+    soil_clay_content = Soil_Clay_content,
+    soil_silt_content = Soil_Silt_content,
+    soil_organic_carbon_content = Soil_organic_carbon_content,
+    soil_nitrogen_content = Soil_Nitrogen,
+    soil_pH = Soil_Ph_h2o,
+    soil_bulk_density = Soil_Bulk_density)
 
 res.pca <- PCA(pedoclim_var_acp,quali.sup =12)
 
@@ -125,10 +137,26 @@ fviz_pca_biplot(res.pca,
               select.ind = list(cos2 = 0.35))
 
 fviz_pca_biplot(res.pca, 
+                axes = c(1, 2),
+                col.var = "black", 
+                habillage = as.factor(pedoclim_var_acp$region_biogeo),
+                palette = c("steelblue2", "aquamarine3"),
+                label = "var")
+
+fviz_pca_biplot(res.pca, 
+                axes =c(3,4),
+                col.var = "black", 
+              habillage = as.factor(pedoclim_var_acp$region_biogeo),
+              palette = c("steelblue2", "aquamarine3"),
+                label = "var")
+
+fviz_pca_biplot(res.pca, 
                 axes =c(1,3),
                 col.var = "black", 
               habillage = as.factor(pedoclim_var_acp$region_biogeo),
-              select.ind = list(cos2 = 0.35))
+                            palette = c("steelblue2", "aquamarine3"),
+                label = "var")
+
 fviz_eig(res.pca)
 
 fviz_pca_var(res.pca, 
@@ -137,15 +165,59 @@ fviz_pca_var(res.pca,
              gradient.cols = c("grey80", "#E7B800", "#FC4E07"),
              repel=TRUE)
 
+fviz_pca_var(res.pca, 
+                axes =c(1,3),
+             col.var = "contrib",
+             gradient.cols = c("grey80", "#E7B800", "#FC4E07"),
+             repel=TRUE)
+
 r <- dimdesc(res.pca, axes = c(1,2), proba = 0.05)
 r$Dim.1
 r$Dim.2
 r2 <- dimdesc(res.pca, axes = c(3,4), proba = 0.05)
-r$Dim.3
-r$Dim.4
-
-
+r2$Dim.3
+r2$Dim.4
 ```
+
+Axe 1 22.5 % :
+
+hautes valeurs = tempéré basses valeurs = Méditerranée surtout
+
+Soil N : 0.77 Soil organic C : 0.66 Soil silt : 0.5
+
+Soil sand : -0.57 temp moy : -0.47 pH : -0.43
+
+hautes valeurs = sols plus riches et limoneux basses valeurs = sols sableux, température plus élevée et pH plus bas. Nord vs Sud.
+
+Axe 2 21 % :
+
+hautes valeurs = Méditerranée et tempéré basses valeurs = tempéré
+
+saisonnalité pluies : 0.7 temp moy : 0.58 sable sol : 0.52 precip : 0.4
+
+soil bulk density : -0.62 pH : -0.42
+
+hautes valeurs = zones avec plus de variations de température, températures plus élevées, sols plus sableux et plus de précipitations. Méditerranée et sud ouest ?
+
+Axe 3 16.8 % :
+
+hautes valeurs = Méditerranée et tempéré basses valeurs = tempéré
+
+argile sol : 0.68 pH : 0.51 N sol : 0.47 sol C orga : 0.45
+
+limons sol : -0.57
+
+hautes valeurs = sols plutôt fertiles et argileux
+
+Axe 4 12.5 % :
+
+hautes valeurs = tempéré basses valeurs = tempéré et méditerranée
+
+temperature range : 0.66 précip : 0.52 sol sable : 0.43
+
+saisonnalité des précip : -0.49 limons : -0.36
+
+hautes valeurs = zone continentale moitié nord et montagnes avec plus de différences de températures entre les saisons et plus de pluies basses valeurs = méditerranée et zones littorales
 
 ## 4.4. Save pca axes
 
@@ -178,11 +250,9 @@ corr <- cor(landscape_var2, use="complete.obs")
 ggcorrplot(corr, method = "square", hc.order = TRUE)
 ```
 
-pourc prairies / pourc cultures : -0.6 
-shannon_crops / shannon_landscape : 0.9
+pourc prairies / pourc cultures : -0.6 shannon_crops / shannon_landscape : 0.9
 
-pourc cultures / pourc ESN : -0.86 
-pourc prairies / pourc ESN : 0.75
+pourc cultures / pourc ESN : -0.86 pourc prairies / pourc ESN : 0.75
 
 ## 5.2. Impute missing variables
 
@@ -196,12 +266,12 @@ res.imp <- imputePCA(landscape_var3, ncp = ncomp$ncp)
 
 res.imp$completeObs # le nouveau tableau de données avec les données manquantes estimées
 
-landscape_var_imputed <- as_tibble(res.imp$completeObs) %>% 
+landscape_var_imputed <- as_tibble(res.imp$completeObs) %>%
   cbind(name_var) %>% 
   relocate("id_parcelle") %>% 
   left_join(biogeo) 
 
-write.csv(landscape_var_imputed,file="3. Pedoclim data/3.4. Pedoclim_landscape_pcas/Processed/landscape_var_imputed.csv") 
+#write.csv(landscape_var_imputed,file="3. Pedoclim data/3.4. Pedoclim_landscape_pcas/Processed/landscape_var_imputed.csv") 
 
 ```
 
@@ -209,27 +279,36 @@ write.csv(landscape_var_imputed,file="3. Pedoclim data/3.4. Pedoclim_landscape_p
 
 ```{r}
 landscape_var_acp <- landscape_var_imputed %>% 
-  select(-pourc_cultures,-pourc_prairies,-shannon_landscape)%>% 
+  select(id_parcelle,pourc_routes_batis,pourc_ESN,pourc_eau,pourc_bio_2019,shannon_crops,region_biogeo)%>% 
   mutate_if(is.numeric, scale) %>% 
+  filter(id_parcelle!="72") %>% 
   column_to_rownames("id_parcelle")
 
-res.pca <- PCA(landscape_var_acp,quali.sup =13)
+res.pca <- PCA(landscape_var_acp,quali.sup =6)
 
 fviz_pca_biplot(res.pca, 
                 axes =c(1,2),
                 col.var = "black", 
               habillage = as.factor(landscape_var_acp$region_biogeo),
               select.ind = list(cos2 = 0.35))
+
+fviz_pca_biplot(res.pca, 
+                axes =c(3,4),
+                col.var = "black", 
+              habillage = as.factor(landscape_var_acp$region_biogeo),
+              select.ind = list(cos2 = 0.35))
+
 
 fviz_pca_biplot(res.pca, 
                 axes =c(1,3),
                 col.var = "black", 
               habillage = as.factor(landscape_var_acp$region_biogeo),
               select.ind = list(cos2 = 0.35))
+
 fviz_eig(res.pca)
 
 fviz_pca_var(res.pca, 
-                axes =c(1,2),
+                axes =c(1,3),
              col.var = "contrib",
              gradient.cols = c("grey80", "#E7B800", "#FC4E07"),
              repel=TRUE)
@@ -242,4 +321,4 @@ r$Dim.3
 r$Dim.4
 ```
 
---\> The % of inertia are too weak, I decide to keep the variables : pourc_ESN, shannon_landscape, pourc_eau and pourc_routes_bati
+--\> I decide to keep the variables : pourc_ESN, shannon_landscape, pourc_eau and pourc_routes_bati
