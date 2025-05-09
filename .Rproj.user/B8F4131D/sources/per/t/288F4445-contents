@@ -24,6 +24,7 @@ library(RColorBrewer)
 library(ggpubr)
 library(ggsignif)
 library(spdep)
+select <- dplyr::select
 ```
 
 # 0. Intro
