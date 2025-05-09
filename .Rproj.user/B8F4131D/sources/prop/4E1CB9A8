@@ -6,8 +6,13 @@
     "Source": "Source",
     "docOutlineVisible": "1",
     "rmdVisualCollapsedChunks": "",
+<<<<<<< HEAD
+    "cursorPosition": "448,0",
+    "scrollLine": "424",
+=======
     "cursorPosition": "45,0",
     "scrollLine": "42",
+>>>>>>> a0b0431ba0ba13a487049773b81648e77cda8b50
     "rmdVisualModeLocation": "2:0",
     "last_setup_crc32": "",
     "chunk_output_type": "console",
