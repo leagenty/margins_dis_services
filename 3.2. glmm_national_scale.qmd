@@ -38,6 +38,8 @@ dataset_500_ENI_Lea <- read.csv(file="3. Models_national_scale/3.2. Models/Raw/d
 
 summary(dataset_500_ENI_Lea$perennial_100)
 select <- dplyr::select
+
+bota <- read.csv(file="1. Flore/1.2. Description flore/Raw/Flore_500ENI_without_dupplicates_with_synonyms.csv",sep=",")
 ```
 
 ## 0.2. Correlation between response variables
@@ -690,4 +692,121 @@ mutate(signif = ifelse(p_val > 0.05, "trend",
                 ifelse(p_val > 0.001, "**", "***")))) 
 
 write.csv(results_models,file="3. Models_national_scale/3.2. Models/Processed/results_models.csv")
+```
+
+# 8. Plant abundance
+```{r}
+bota2 <- bota %>% 
+  dplyr::select(id_parc_an,id_parcelle,annee,nom_eni,total) %>% 
+  pivot_wider(names_from = nom_eni,
+              values_from = total,
+              values_fill = 0) 
+ab <- bota2 %>%
+  group_by(id_parcelle, annee) %>%
+  summarise(ab_pl = sum(c_across(where(is.numeric)), na.rm = TRUE)) %>%
+  ungroup()
+
+dataset_ab <- read.csv(file="3. Models_national_scale/3.2. Models/Raw/dataset_500_ENI_Lea.csv")  %>% 
+  left_join(ab) %>% 
+  filter(!is.na(ab_pl)) %>% 
+    mutate(TypeCulture=as_factor(TypeCulture),
+         id_parcelle=as_factor(id_parcelle)) %>% 
+  mutate(across(c(annee , JulianDay , RisqueDebordement ,shannon_crops,pourc_ESN,pourc_eau,pourc_routes_batis,pourc_cultures,IFT_H, IFT_T,p_bio,Bordure_Largeur,Bordure_BroyageFauchage_ramassage, Bordure_BroyageFauchage_SansRamassage,Bordure_NombreInterventionYEAR, IFT_Hors_Herbicide2013_2019 ,IFT_Herbicide2013_2019,CoefN,SC_Year_Copper.compounds.1), scale))
+```
+
+## 8.1. Temporality and field conditions
+
+```{r}
+m0 <- lmer(ab_pl ~ annee + JulianDay^2 + RisqueDebordement +   exposition2+ TypeCulture  +(1| id_parcelle)  , data=dataset_ab, REML=T, na.action="na.fail")
+dredge(m0)
+
+m0_best <- lmer(ab_pl ~ JulianDay^2 + RisqueDebordement + TypeCulture + (1| id_parcelle)  , data=dataset_ab, REML=F,na.action="na.fail")
+summary(m0_best)
+Anova(m0_best)
+r.squaredGLMM(m0_best)
+```
+
+## 8.2. Landscape and pedoclimate
+
+```{r}
+mod_envi <- lmer(ab_pl ~JulianDay^2 + RisqueDebordement + TypeCulture + dim1_pedoclim + dim2_pedoclim + dim3_pedoclim+shannon_crops+pourc_ESN+pourc_eau+pourc_routes_batis+pourc_cultures+ (1| id_parcelle)  , data=dataset_ab, REML=F, na.action="na.fail")
+dredge(mod_envi)
+
+mod_envi_best <- lmer(ab_pl ~ JulianDay^2  + TypeCulture   + pourc_ESN + shannon_crops +(1| id_parcelle)  , data=dataset_ab, REML=F, na.action="na.fail")
+summary(mod_envi_best)
+Anova(mod_envi_best)
+r.squaredGLMM(mod_envi_best)
+```
+
+## 8.3. Management
+
+### 8.3.1. Municipality scale pesticides
+
+```{r}
+mod_pest <- lmer(ab_pl ~ JulianDay^2  + TypeCulture   + pourc_ESN + shannon_crops+IFT_H+ IFT_T+p_bio+ (1| id_parcelle)  , data=dataset_ab, REML=F, na.action="na.fail")
+vif(mod_pest)
+dredge(mod_pest)
+
+mod_pest_best <- lmer(ab_pl ~ JulianDay^2 + shannon_crops+IFT_H+ (1| id_parcelle)  , data=dataset_ab, REML=F, na.action="na.fail")
+summary(mod_pest_best)
+Anova(mod_pest_best)
+r.squaredGLMM(mod_pest_best)
+```
+
+ns
+
+### 8.3.2. Field margin management
+
+```{r}
+mod_bord <- lmer(ab_pl~ JulianDay^2 + shannon_crops+IFT_H+Bordure_Largeur+Bordure_BroyageFauchage_ramassage+ Bordure_BroyageFauchage_SansRamassage+Bordure_NombreInterventionYEAR+ (1| id_parcelle)  , data=dataset_ab, REML=F, na.action="na.fail")
+dredge(mod_bord)
+
+mod_bord_best <- lmer(ab_pl ~ JulianDay^2 + shannon_crops+IFT_H+Bordure_Largeur+ Bordure_BroyageFauchage_SansRamassage+  (1| id_parcelle), data=dataset_ab, REML=T, na.action="na.fail")
+summary(mod_bord_best)
+Anova(mod_bord_best)
+r.squaredGLMM(mod_bord_best)
+```
+
+
+### 8.3.3. Intra field practices
+
+```{r}
+mod_prat <- lmer(ab_pl ~ JulianDay^2 + shannon_crops+IFT_H+Bordure_Largeur+ Bordure_BroyageFauchage_SansRamassage+ IFT_Hors_Herbicide2013_2019 +IFT_Herbicide2013_2019+CoefN+SC_Year_Copper.compounds.1+ (1| id_parcelle)  , data=dataset_ab, REML=F, na.action="na.fail")
+vif(mod_prat)
+dredge(mod_prat)
+
+mod_prat_best <- lmer(ab_pl ~ JulianDay^2 + shannon_crops+IFT_H+Bordure_Largeur+ Bordure_BroyageFauchage_SansRamassage +IFT_Herbicide2013_2019+SC_Year_Copper.compounds.1+ (1| id_parcelle)  , data=dataset_ab, REML=F, na.action="na.fail")
+summary(mod_prat_best)
+Anova(mod_prat_best)
+r.squaredGLMM(mod_prat_best)
+```
+
+
+## 8.4. Production type
+
+```{r}
+mod_bio <- lmer(ab_pl~   JulianDay^2  + TypeCulture   + pourc_ESN + shannon_crops+ type_production + (1| id_parcelle)  , data=dataset_ab, REML=T, na.action="na.fail")
+vif(mod_bio)
+summary(mod_bio)
+Anova(mod_bio)
+r.squaredGLMM(mod_bio)
+```
+
+
+## 8.5. Extract results
+
+```{r}
+r2 <- r.squaredGLMM(mod_prat_best)
+anov <- Anova(mod_prat_best) %>% 
+  rownames_to_column("term") %>% 
+  select(1,4)
+res_ab <- broom.mixed::tidy(mod_prat_best) %>% 
+  select(term,estimate,std.error) %>% 
+  drop_na() %>% 
+  full_join(anov) %>% 
+  mutate(variable="ab_pl") %>% 
+  relocate(variable) %>% 
+  rename(predictor=term) %>% 
+  mutate(R2m = r2[1],
+         R2c = r2[2])
 ```
