@@ -631,7 +631,7 @@ mod_prat <- lmer(weeds_100 ~  IFT_Hors_Herbicide2013_2019 +IFT_Herbicide2013_201
 vif(mod_prat)
 dredge(mod_prat)
 
-mod_prat_best <- lmer(weeds_100 ~ Bordure_BroyageFauchage_SansRamassage + Bordure_Largeur +  JulianDay^2 + TypeCulture  + pourc_cultures  +CoefN + (1| id_parcelle)  , data=dataset_500_ENI_Lea, REML=F, na.action="na.fail")
+mod_prat_best <- lmer(weeds_100 ~ Bordure_BroyageFauchage_SansRamassage + Bordure_Largeur +  JulianDay^2 + TypeCulture  + pourc_cultures  +CoefN  + (1| id_parcelle)  , data=dataset_500_ENI_Lea, REML=F, na.action="na.fail")
 Anova(mod_prat_best)
 summary(mod_prat_best)
 r.squaredGLMM(mod_prat_best)
